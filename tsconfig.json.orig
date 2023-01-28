@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "emitDeclarationOnly": false,
+    "declaration": true,
+    "target": "esnext",
+    "newLine": "LF",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "jsxImportSource": "solid-js",
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+  },
+  "types": [
+    "solid-js",
+    "solid-js/dom"
+  ],
+  "include": [
+    "./src"
+  ],
+  "exclude": ["node_modules"]
+}

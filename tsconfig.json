@@ -1,25 +1,15 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
-    "emitDeclarationOnly": false,
-    "declaration": true,
-    "target": "esnext",
-    "newLine": "LF",
+    "strict": false,
+    "target": "ESNext",
+    "module": "ESNext",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "jsxImportSource": "solid-js",
-    "jsx": "preserve",
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-  },
-  "types": [
-    "solid-js",
-    "solid-js/dom"
-  ],
-  "include": [
-    "./src"
-  ],
-  "exclude": ["node_modules"]
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "types": ["vite/client"],
+    "noEmit": true,
+    "isolatedModules": true
+  }
 }

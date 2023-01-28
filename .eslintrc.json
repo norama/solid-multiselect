@@ -108,7 +108,7 @@
         "new-parens": "error",
         "max-lines": [
             "warn",
-            600
+            900
         ],
         "no-trailing-spaces": [
             "warn",

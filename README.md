@@ -1,41 +1,34 @@
-# <img width="27px" src="https://github.com/solidjs/solid-site/raw/master/src/assets/logo.png" alt="Solid logo"> &nbsp;Solid MultiSelect
+## Usage
 
-## Installation
+Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
+
+This is the reason you see a `pnpm-lock.yaml`. That being said, any package manager will work. This file can be safely be removed once you clone a template.
 
 ```bash
-## in npm
-npm install @digichanges/solid-multiselect
-## or in yarn
-yarn add @digichanges/solid-multiselect
+$ npm install # or pnpm install or yarn install
 ```
 
-Add as a module:
+### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
 
-```ts
-import { MultiSelect } from '@digichanges/solid-multiselect';
-```
+## Available Scripts
 
-## Demo
-[Demo codesandbox](https://codesandbox.io/s/solidjs-multiselect-demo-db55z?file=/src/main.tsx)
+In the project directory, you can run:
 
-<img src="doc/multiselect_examples.png" alt="multi-select example">
+### `npm dev` or `npm start`
 
-### Search:
-<img src="doc/multiselect_search_examples.png" alt="multi-select search example">
+Runs the app in the development mode.<br>
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-## Example
+The page will reload if you make edits.<br>
 
+### `npm run build`
 
-```jsx
-import { MultiSelect } from '@digichanges/solid-components'
+Builds the app for production to the `dist` folder.<br>
+It correctly bundles Solid in production mode and optimizes the build for the best performance.
 
-<h3>Limit 2 elements</h3>
-<MultiSelect
-    style={{ chips: { color: "red", "background-color": "pink" } }}
-    options={["yellow", "blue", "pink", "white"]}
-    onSelect={console.log}
-    onRemove={console.log}
-    selectedValues={["yellow"]}
-    selectionLimit={2}
-/>
-```
+The build is minified and the filenames include the hashes.<br>
+Your app is ready to be deployed!
+
+## Deployment
+
+You can deploy the `dist` folder to any static host provider (netlify, surge, now, etc.)
