@@ -1,8 +1,39 @@
 {
-  "name": "vite-template-solid",
-  "version": "0.0.0",
+  "name": "@norama/solid-multiselect",
+  "version": "0.1",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/norama/solid-multiselect.git"
+  },
+  "bugs": {
+    "url": "https://github.com/norama/solid-multiselect.git/issues"
+  },
+  "homepage": "https://github.com/norama/solid-multiselect.git#readme",
+  "main": "npmdist/index.jsx",
+  "module": "npmdist/index.jsx",
+  "types": "npmdist/index.d.ts",
+  "files": [
+    "npmdist"
+  ],
+  "keywords": [
+    "solid",
+    "solidjs",
+    "components",
+    "multiSelect",
+    "dropdown",
+    "singleSelect",
+    "html component"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "",
   "scripts": {
+    "prebuild": "pnpm run clean",
+    "clean": "rimraf dist/ npmdist/",
+    "npmbuild": "tsc --project tsconfig.npmbuild.json && pnpm cp:css",
+    "cp:css": "cp src/components/MultiSelect.css npmdist/MultiSelect.css",
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
@@ -10,6 +41,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^18.11.18",
     "prettier": "^2.8.3",
     "prettier-plugin-solidity": "^1.1.1",
     "typescript": "^4.9.4",

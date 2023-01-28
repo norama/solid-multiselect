@@ -107,7 +107,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   )
   const [groupedObject, setGroupedObject] = createSignal([])
 
-  let optionTimeout: number
+  let optionTimeout: any
   let searchBox: HTMLInputElement
   const searchWrapper = (el: HTMLDivElement) => el.addEventListener('click', listenerCallback)
 

@@ -14,7 +14,7 @@ const handleSingleSelect = (data) => {
   console.log(data)
 }
 
-function MultiSelectDemo() {
+const MultiSelectDemo = () => {
   return (
     <>
       <h3>Array String Multiselect</h3>
@@ -51,13 +51,14 @@ function MultiSelectDemo() {
           },
         ]}
       />
-      <h3>Limit 2 elements</h3>
+      <h3>Limit 2 elements, non-searchable</h3>
       <MultiSelect
         options={['yellow', 'blue', 'pink', 'white']}
         onSelect={console.log}
         onRemove={console.log}
         selectedValues={['yellow']}
         selectionLimit={2}
+        searchable={false}
       />
       <h3>Empty Record Msg and Color</h3>
       <MultiSelect

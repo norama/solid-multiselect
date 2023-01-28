@@ -16,6 +16,6 @@
     "types": ["vite/client", "solid-js"],
     "outDir": "./npmdist"
   },
-  "include": ["./src"],
+  "include": ["./src/components"],
   "exclude": ["node_modules"]
 }
