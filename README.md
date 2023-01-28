@@ -15,7 +15,7 @@ Changes:
 # Install
 
 ```bash
-npm i @norama.matema/solid-multiselect
+npm i '@norama.matema/solid-multiselect'
 ```
 
 # Clone and Run

@@ -1,6 +1,6 @@
 {
   "name": "@norama.matema/solid-multiselect",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Nóra Máté based on DigiChanges <https://www.linkedin.com/company/digichanges>",
   "private": false,
   "repository": {
@@ -31,6 +31,7 @@
   },
   "description": "",
   "scripts": {
+    "prepublishOnly": "pnpm run npmbuild",
     "prebuild": "pnpm run clean",
     "clean": "rimraf dist/ npmdist/",
     "npmbuild": "tsc --project tsconfig.npmbuild.json && pnpm cp:css",
