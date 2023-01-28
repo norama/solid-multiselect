@@ -1,6 +1,7 @@
 {
-  "name": "@norama/solid-multiselect",
-  "version": "0.1",
+  "name": "@norama.matema/solid-multiselect",
+  "version": "0.1.1",
+  "author": "Nóra Máté based on DigiChanges <https://www.linkedin.com/company/digichanges>",
   "private": false,
   "repository": {
     "type": "git",

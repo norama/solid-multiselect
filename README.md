@@ -12,6 +12,20 @@ Changes:
 
 - `MultiSelect.css` is no longer imported, copy to your project, include and modify accordingly.
 
+# Install
+
+```bash
+npm i @norama.matema/solid-multiselect
+```
+
+# Clone and Run
+
+## Git clone
+
+```bash
+git clone https://github.com/norama/solid-multiselect.git .
+```
+
 ## Install dependencies
 
 ```bash
