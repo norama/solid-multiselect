@@ -96,7 +96,7 @@ const MultiSelectDemo = () => {
       <MultiSelect
         style={{ notFound: { color: 'green' } }}
         emptyRecordMsg="here your empty message"
-        options={['one', 'two', 'three']}
+        options={['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']}
         selectedValues={['two']}
         searchable={false}
         onSelect={handleSingleSelect}

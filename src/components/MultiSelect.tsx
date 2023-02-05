@@ -547,6 +547,8 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
         classList={{ disable_ms: disable }}
         id={id || 'multiSelectContainerSolid'}
         style={style['multiSelectContainer']}
+        onBlur={() => setToggleOptionsList(false)}
+        tabIndex={0}
       >
         <div
           class="search-wrapper searchWrapper"
