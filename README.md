@@ -38,6 +38,11 @@ $ npm install # or pnpm install or yarn install
 
 Creates the compiled component files in the `npmdist` directory.
 
+### `npm publish`
+
+Publishes the component, also runs the above npm build script before.
+Do not forget to increase the version in `package.json`.
+
 ## Solid-JS application with MultiSelect examples
 
 In the project directory, you can run:
