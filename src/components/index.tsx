@@ -1,8 +1,8 @@
 import MultiSelect, { IMultiSelectProps } from './MultiSelect'
-import { Option } from './Option'
+import { IOption } from './option/Option'
 
 export type { IMultiSelectProps }
 
-export type { Option }
+export type { IOption as Option }
 
 export default MultiSelect

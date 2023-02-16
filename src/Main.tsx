@@ -1,8 +1,8 @@
 import MultiSelect from './components/MultiSelect'
-import { Option } from './components/Option'
+import { IOption } from './components/option/Option'
 import './components/MultiSelect.css'
 
-const groupedOptions: Option[] = [
+const groupedOptions: IOption[] = [
   { key: 'yellow', value: 'amarillo', group: 'colors' },
   { key: 'pink', value: 'rosa', group: 'colors' },
   { key: 'xs', value: 'small', group: 'sizes' },

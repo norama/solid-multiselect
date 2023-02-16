@@ -8,7 +8,10 @@ import {
   Show,
   For,
 } from 'solid-js'
-import { Option } from './Option'
+import { IOption, IStyle } from './option/Option'
+import Loading from './option/Loading'
+import NormalOptions from './option/NormalOptions'
+import GroupByOptions from './option/GroupByOptions'
 
 // const DownArrow = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Angle_down_font_awesome.svg/1200px-Angle_down_font_awesome.svg.png';
 const DownArrow =
@@ -31,19 +34,19 @@ const defaultProps = {
 }
 
 export interface IMultiSelectProps {
-  options: Option[]
+  options: IOption[]
   disablePreSelectedValues?: boolean
-  selectedValues?: Option[]
+  selectedValues?: IOption[]
   isObject?: boolean
   displayValue?: string
   showCheckbox?: boolean
   selectionLimit?: number
   placeholder?: string
   groupBy?: string
-  style?: object
+  style?: IStyle
   emptyRecordMsg?: string
-  onSelect?: (selectedList: Option[], selectedItem: Option) => void
-  onRemove?: (selectedList: Option[], selectedItem: Option) => void
+  onSelect?: (selectedList: IOption[], selectedItem: IOption) => void
+  onRemove?: (selectedList: IOption[], selectedItem: IOption) => void
   onSearch?: (value: string) => void
   closeIcon?: string
   singleSelect?: boolean
@@ -94,10 +97,10 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   const [toggleOptionsList, setToggleOptionsList] = createSignal(false)
   const [highlightOption, setHighlightOption] = createSignal(avoidHighlightFirstOption ? -1 : 0)
   const [inputValue, setInputValue] = createSignal('')
-  const [options, setOptions] = createSignal<Option[]>(props.options)
+  const [options, setOptions] = createSignal<IOption[]>(props.options)
   const [filteredOptions, setFilteredOptions] = createSignal(props.options)
   const [unfilteredOptions, setUnfilteredOptions] = createSignal(props.options)
-  const [selectedValues, setSelectedValues] = createSignal<Option[]>([...props.selectedValues])
+  const [selectedValues, setSelectedValues] = createSignal<IOption[]>([...props.selectedValues])
   const [preSelectedValues, setPreSelectedValues] = createSignal([...props.selectedValues])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [keepSearchTerm, setKeepSearchTerm] = createSignal(props.keepSearchTerm)
@@ -105,67 +108,23 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   const [closeIconType, setCloseIconType] = createSignal(
     closeIconTypes[props.closeIcon] || closeIconTypes['circle']
   )
-  const [groupedObject, setGroupedObject] = createSignal([])
+  const [groupedObject, setGroupedObject] = createSignal({})
 
   let optionTimeout: any
   let searchBox: HTMLInputElement
   const searchWrapper = (el: HTMLDivElement) => el.addEventListener('click', listenerCallback)
 
-  function renderGroupByOptions() {
-    const isObject = props.isObject || false
-    const displayValue = props.displayValue
-    const showCheckbox = props.showCheckbox
-    const style = props.style
-    const singleSelect = props.singleSelect
-    const groupedObjectKeys = Object.keys(groupedObject())
-
-    return (
-      <For each={groupedObjectKeys}>
-        {(objKey) => (
-          <>
-            <li class="groupHeading" style={style['groupHeading']}>
-              {objKey}
-            </li>
-            <For each={groupedObject()[objKey]}>
-              {(option: Option) => (
-                <li
-                  style={style['option']}
-                  class="groupChildEle option"
-                  classList={{
-                    disableSelection:
-                      fadeOutSelection(option) || isDisablePreSelectedValues(option),
-                  }}
-                  onClick={onSelectItem(option)}
-                >
-                  <Show when={showCheckbox && !singleSelect}>
-                    <input
-                      type="checkbox"
-                      class="checkbox"
-                      readOnly
-                      checked={isSelectedValue(option)}
-                    />
-                  </Show>
-                  {isObject ? option[displayValue] : (option || '').toString()}
-                </li>
-              )}
-            </For>
-          </>
-        )}
-      </For>
-    )
-  }
-
-  const isSelectedValue = (item: Option) => {
+  const isSelectedValue = (item: IOption) => {
     if (props.isObject) {
       return (
-        selectedValues().filter((i: Option) => i[props.displayValue] === item[props.displayValue])
+        selectedValues().filter((i: IOption) => i[props.displayValue] === item[props.displayValue])
           .length > 0
       )
     }
     return selectedValues().filter((i) => i === item).length > 0
   }
 
-  const fadeOutSelection = (item: Option) => {
+  const fadeOutSelection = (item: IOption) => {
     if (props.singleSelect) {
       return
     }
@@ -187,7 +146,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     }
   }
 
-  const isDisablePreSelectedValues = (value: Option) => {
+  const isDisablePreSelectedValues = (value: IOption) => {
     if (!props.disablePreSelectedValues || !preSelectedValues().length) {
       return false
     }
@@ -275,12 +234,12 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     initialSetValue()
   })
 
-  const onSingleSelect = (item: Option) => {
+  const onSingleSelect = (item: IOption) => {
     setSelectedValues([item])
     setToggleOptionsList(false)
   }
 
-  const onRemoveSelectedItem = (item: Option) => {
+  const onRemoveSelectedItem = (item: IOption) => {
     let index = 0
     const newSelectedValues = [...selectedValues()]
     if (props.isObject) {
@@ -299,7 +258,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     }
   }
 
-  const onSelectItem = (item: Option) => () => {
+  const onSelectItem = (item: IOption) => () => {
     if (!keepSearchTerm) {
       setInputValue('')
     }
@@ -317,7 +276,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
       return
     }
 
-    const newValuesSelected: Option[] = [...selectedValues(), item]
+    const newValuesSelected: IOption[] = [...selectedValues(), item]
 
     props.onSelect(newValuesSelected, item)
 
@@ -332,58 +291,6 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     if (!props.closeOnSelect) {
       searchBox.focus()
     }
-  }
-
-  function renderNormalOption() {
-    return (
-      <For
-        each={options()}
-        fallback={
-          <span style={props.style['notFound']} class="notFound">
-            {props.emptyRecordMsg ?? 'No Options Available'}
-          </span>
-        }
-      >
-        {(option, index) => (
-          <li
-            style={props.style['option']}
-            class="option"
-            classList={{
-              disableSelection: fadeOutSelection(option),
-              'highlightOption highlight': highlightOption() === index(),
-            }}
-            onClick={onSelectItem(option)}
-          >
-            <Show when={props.showCheckbox && !props.singleSelect}>
-              <input type="checkbox" readOnly class="checkbox" checked={isSelectedValue(option)} />
-            </Show>
-            <Show when={props.isObject} fallback={() => (option || '').toString()}>
-              {option[props.displayValue]}
-            </Show>
-          </li>
-        )}
-      </For>
-    )
-  }
-
-  function renderOptionList() {
-    const loadingMessage = props.loadingMessage ?? 'loading...'
-    if (props.loading) {
-      return (
-        <ul class="optionContainer" style={props.style['optionContainer']}>
-          <Show when={typeof loadingMessage === 'string'} fallback={loadingMessage}>
-            <span class="notFound" style={props.style['loadingMessage']}>
-              {loadingMessage}
-            </span>
-          </Show>
-        </ul>
-      )
-    }
-    return (
-      <ul class="optionContainer" style={props.style['optionContainer']}>
-        {!props.groupBy ? renderNormalOption() : renderGroupByOptions()}
-      </ul>
-    )
   }
 
   const listenerCallback = () => {
@@ -408,7 +315,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   }
 
   const filterOptionsByInput = () => {
-    let newOptions: Option[]
+    let newOptions: IOption[]
     if (props.isObject) {
       newOptions = filteredOptions().filter((option) =>
         matchValues(option[props.displayValue], inputValue())
@@ -422,7 +329,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     setOptions(newOptions)
   }
 
-  const groupByOptions = (options: Option[]) => {
+  const groupByOptions = (options: IOption[]) => {
     const groupBy = props.groupBy
     const groupedObject = options.reduce(function (r, a) {
       const key = a[groupBy] || 'Others'
@@ -589,7 +496,35 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
           class="optionListContainer"
           classList={{ displayBlock: toggleOptionsList(), displayNone: !toggleOptionsList() }}
         >
-          {renderOptionList()}
+          {props.loading && <Loading style={props.style} loadingMessage={props.loadingMessage} />}
+          {!props.groupBy ? (
+            <NormalOptions
+              options={options}
+              emptyRecordMsg={props.emptyRecordMsg}
+              style={props.style}
+              isObject={props.isObject}
+              displayValue={props.displayValue}
+              showCheckbox={props.showCheckbox}
+              singleSelect={props.singleSelect}
+              onSelectItem={onSelectItem}
+              fadeOutSelection={fadeOutSelection}
+              highlightOption={highlightOption}
+              isSelectedValue={isSelectedValue}
+            />
+          ) : (
+            <GroupByOptions
+              groupedObject={groupedObject}
+              style={style}
+              isObject={props.isObject}
+              displayValue={props.displayValue}
+              showCheckbox={props.showCheckbox}
+              singleSelect={props.singleSelect}
+              onSelectItem={onSelectItem}
+              fadeOutSelection={fadeOutSelection}
+              isDisablePreSelectedValues={isDisablePreSelectedValues}
+              isSelectedValue={isSelectedValue}
+            />
+          )}
         </div>
       </div>
     )
