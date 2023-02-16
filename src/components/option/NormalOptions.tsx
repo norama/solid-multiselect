@@ -1,4 +1,4 @@
-import { IOption, IStyle } from './Option'
+import type { IOption, IStyle } from './Option'
 import { Show, For } from 'solid-js'
 
 type Props = {

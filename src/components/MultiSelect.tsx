@@ -6,12 +6,12 @@ import {
   onMount,
   Component,
   Show,
-  For,
 } from 'solid-js'
-import { IOption, IStyle } from './option/Option'
+import type { IOption, IStyle } from './option/Option'
 import Loading from './option/Loading'
 import NormalOptions from './option/NormalOptions'
 import GroupByOptions from './option/GroupByOptions'
+import SelectedList from './SelectedList'
 
 // const DownArrow = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Angle_down_font_awesome.svg/1200px-Angle_down_font_awesome.svg.png';
 const DownArrow =
@@ -412,125 +412,96 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     }
   }
 
-  function renderSelectedList() {
-    return (
-      <For each={selectedValues()}>
-        {(value) => (
-          <span
-            class="chip"
-            classList={{
-              singleChip: props.singleSelect,
-              disableSelection: isDisablePreSelectedValues(value),
-            }}
-            style={props.style['chips']}
-          >
-            {!props.isObject ? (value || '').toString() : value[props.displayValue]}
-            <Show when={!isDisablePreSelectedValues(value)}>
-              <Show
-                when={!props.customCloseIcon}
-                fallback={() => (
-                  <i class="custom-close" onClick={() => onRemoveSelectedItem(value)}>
-                    {props.customCloseIcon}
-                  </i>
-                )}
-              >
-                <img
-                  class="icon_cancel closeIcon"
-                  src={closeIconType()}
-                  onClick={() => onRemoveSelectedItem(value)}
-                />
-              </Show>
-            </Show>
-          </span>
-        )}
-      </For>
-    )
-  }
-
-  function renderMultiSelectContainer() {
-    return (
+  return (
+    <div
+      class="multiSelect-container multiSelectContainer"
+      classList={{ disable_ms: disable }}
+      id={id || 'multiSelectContainerSolid'}
+      style={style['multiSelectContainer']}
+      onBlur={() => setToggleOptionsList(false)}
+      tabIndex={0}
+    >
       <div
-        class="multiSelect-container multiSelectContainer"
-        classList={{ disable_ms: disable }}
-        id={id || 'multiSelectContainerSolid'}
-        style={style['multiSelectContainer']}
-        onBlur={() => setToggleOptionsList(false)}
-        tabIndex={0}
+        class="search-wrapper searchWrapper"
+        classList={{ singleSelect }}
+        ref={searchWrapper}
+        style={style['searchBox']}
+        onClick={() => toggleOptionList()}
       >
-        <div
-          class="search-wrapper searchWrapper"
-          classList={{ singleSelect }}
-          ref={searchWrapper}
-          style={style['searchBox']}
-          onClick={() => toggleOptionList()}
-        >
-          {renderSelectedList()}
-          <Show when={props.searchable}>
-            <input
-              type="text"
-              ref={searchBox}
-              class="searchBox"
-              classList={{ searchSingle: singleSelect }}
-              id={`${id || 'search'}_input`}
-              onInput={onInput}
-              value={inputValue()}
-              onFocus={onFocus}
-              onBlur={onBlur}
-              placeholder={
-                (singleSelect && selectedValues().length) ||
-                (hidePlaceholder && selectedValues().length)
-                  ? ''
-                  : placeholder
-              }
-              onKeyDown={onArrowKeyNavigation}
-              style={style['inputField']}
-              autocomplete="off"
-              disabled={disable}
-            />
-          </Show>
-          <Show when={singleSelect || showArrow}>
-            <img class="icon_cancel icon_down_dir" src={DownArrow} />
-          </Show>
-        </div>
-        <div
-          class="optionListContainer"
-          classList={{ displayBlock: toggleOptionsList(), displayNone: !toggleOptionsList() }}
-        >
-          {props.loading && <Loading style={props.style} loadingMessage={props.loadingMessage} />}
-          {!props.groupBy ? (
-            <NormalOptions
-              options={options}
-              emptyRecordMsg={props.emptyRecordMsg}
-              style={props.style}
-              isObject={props.isObject}
-              displayValue={props.displayValue}
-              showCheckbox={props.showCheckbox}
-              singleSelect={props.singleSelect}
-              onSelectItem={onSelectItem}
-              fadeOutSelection={fadeOutSelection}
-              highlightOption={highlightOption}
-              isSelectedValue={isSelectedValue}
-            />
-          ) : (
-            <GroupByOptions
-              groupedObject={groupedObject}
-              style={style}
-              isObject={props.isObject}
-              displayValue={props.displayValue}
-              showCheckbox={props.showCheckbox}
-              singleSelect={props.singleSelect}
-              onSelectItem={onSelectItem}
-              fadeOutSelection={fadeOutSelection}
-              isDisablePreSelectedValues={isDisablePreSelectedValues}
-              isSelectedValue={isSelectedValue}
-            />
-          )}
-        </div>
+        <SelectedList
+          singleSelect={singleSelect}
+          selectedValues={selectedValues}
+          style={style}
+          isDisablePreSelectedValues={isDisablePreSelectedValues}
+          onRemoveSelectedItem={onRemoveSelectedItem}
+          displayValue={props.displayValue}
+          isObject={props.isObject}
+          customCloseIcon={props.customCloseIcon}
+          closeIconType={closeIconType}
+        />
+        <Show when={props.searchable}>
+          <input
+            type="text"
+            ref={searchBox}
+            class="searchBox"
+            classList={{ searchSingle: singleSelect }}
+            id={`${id || 'search'}_input`}
+            onInput={onInput}
+            value={inputValue()}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            placeholder={
+              (singleSelect && selectedValues().length) ||
+              (hidePlaceholder && selectedValues().length)
+                ? ''
+                : placeholder
+            }
+            onKeyDown={onArrowKeyNavigation}
+            style={style['inputField']}
+            autocomplete="off"
+            disabled={disable}
+          />
+        </Show>
+        <Show when={singleSelect || showArrow}>
+          <img class="icon_cancel icon_down_dir" src={DownArrow} />
+        </Show>
       </div>
-    )
-  }
-
-  return renderMultiSelectContainer()
+      <div
+        class="optionListContainer"
+        classList={{ displayBlock: toggleOptionsList(), displayNone: !toggleOptionsList() }}
+      >
+        {props.loading && <Loading style={props.style} loadingMessage={props.loadingMessage} />}
+        {!props.groupBy ? (
+          <NormalOptions
+            options={options}
+            emptyRecordMsg={props.emptyRecordMsg}
+            style={props.style}
+            isObject={props.isObject}
+            displayValue={props.displayValue}
+            showCheckbox={props.showCheckbox}
+            singleSelect={props.singleSelect}
+            onSelectItem={onSelectItem}
+            fadeOutSelection={fadeOutSelection}
+            highlightOption={highlightOption}
+            isSelectedValue={isSelectedValue}
+          />
+        ) : (
+          <GroupByOptions
+            groupedObject={groupedObject}
+            style={style}
+            isObject={props.isObject}
+            displayValue={props.displayValue}
+            showCheckbox={props.showCheckbox}
+            singleSelect={props.singleSelect}
+            onSelectItem={onSelectItem}
+            fadeOutSelection={fadeOutSelection}
+            isDisablePreSelectedValues={isDisablePreSelectedValues}
+            isSelectedValue={isSelectedValue}
+          />
+        )}
+      </div>
+    </div>
+  )
 }
 
 export default MultiSelect

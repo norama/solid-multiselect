@@ -1,4 +1,4 @@
-import { IOption, IStyle } from './Option'
+import type { IOption, IStyle } from './Option'
 import { Show, For } from 'solid-js'
 
 type Props = {
@@ -26,11 +26,9 @@ const GroupByOptions = ({
   isDisablePreSelectedValues,
   isSelectedValue,
 }: Props) => {
-  const groupedObjectKeys = Object.keys(groupedObject())
-
   return (
     <ul class="optionContainer" style={style['optionContainer']}>
-      <For each={groupedObjectKeys}>
+      <For each={Object.keys(groupedObject())}>
         {(objKey) => (
           <>
             <li class="groupHeading" style={style['groupHeading']}>
