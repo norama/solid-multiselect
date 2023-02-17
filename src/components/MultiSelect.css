@@ -84,7 +84,7 @@
 }
 
 .multiSelectContainer li {
-  padding: 10px 10px;
+  padding: 8px 8px;
 }
 
 .multiSelectContainer li:hover {
@@ -95,6 +95,8 @@
 
 .checkbox {
   margin-right: 10px;
+  cursor: pointer;
+  transform: scale(1.2);
 }
 
 .disableSelection {

@@ -182,15 +182,20 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     }
   }
 
+  createEffect(() => {
+    if (!optionListOpen()) {
+      setInputValue('')
+      filterOptionsByInput('')
+    }
+  }, optionListOpen)
+
   createEffect((prevOptions) => {
     if (JSON.stringify(prevOptions) !== JSON.stringify(props.options)) {
       setOptions(props.options)
       setFilteredOptions(props.options)
       setUnfilteredOptions(props.options)
-      // TODO: Fix wait
-      setTimeout(() => {
-        initialSetValue()
-      }, 0)
+      setInputValue('')
+      filterOptionsByInput('')
     }
     return props.options
   }, props.options)
@@ -199,12 +204,9 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     if (JSON.stringify(prevSelectedValues) !== JSON.stringify(props.selectedValues)) {
       setSelectedValues(Object.assign([], props.selectedValues))
       setPreSelectedValues(Object.assign([], props.selectedValues))
-      // TODO: Fix wait
-      setTimeout(() => {
-        initialSetValue()
-      }, 0)
+      setInputValue('')
+      filterOptionsByInput('')
     }
-    return props.selectedValues
   }, props.selectedValues)
 
   onMount(() => {
@@ -289,6 +291,9 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   }
 
   const filterOptionsByInput = (val = inputValue()) => {
+    if (!props.searchable) {
+      return
+    }
     let newOptions: IOption[]
     if (displayKey) {
       newOptions = filteredOptions().filter((option) => matchValues(option[displayKey], val))
