@@ -26,7 +26,7 @@ const defaultProps = {
   style: {},
   placeholder: 'select',
   groupBy: '',
-  disable: false,
+  disabled: false,
   searchable: true,
   onSelect: () => {},
   onRemove: () => {},
@@ -55,7 +55,7 @@ export interface IMultiSelectProps {
   avoidHighlightFirstOption?: boolean
   hidePlaceholder?: boolean
   showArrow?: boolean
-  disable?: boolean
+  disabled?: boolean
   searchable?: boolean
   loading?: boolean
   loadingMessage?: string
@@ -69,7 +69,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     'singleSelect',
     'id',
     'hidePlaceholder',
-    'disable',
+    'disabled',
     'showArrow',
     'avoidHighlightFirstOption',
   ])
@@ -79,7 +79,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     singleSelect,
     id,
     hidePlaceholder,
-    disable,
+    disabled,
     showArrow,
     avoidHighlightFirstOption,
   } = local
@@ -395,7 +395,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   return (
     <div
       class="multiSelect-container multiSelectContainer"
-      classList={{ disable_ms: disable }}
+      classList={{ disable_ms: disabled }}
       id={id || 'multiSelectContainerSolid'}
       style={style['multiSelectContainer']}
       onBlur={() => setOptionListOpen(false)}
@@ -437,7 +437,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
             onKeyDown={onArrowKeyNavigation}
             style={style['inputField']}
             autocomplete="off"
-            disabled={disable}
+            disabled={disabled}
           />
         </Show>
         <Show when={singleSelect || showArrow}>
