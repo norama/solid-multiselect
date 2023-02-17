@@ -12,7 +12,7 @@ type Props = {
   displayKey?: string
 }
 
-const SelectedList = ({
+const SelectedChips = ({
   singleSelect,
   selectedValues,
   style,
@@ -43,4 +43,4 @@ const SelectedList = ({
   )
 }
 
-export default SelectedList
+export default SelectedChips

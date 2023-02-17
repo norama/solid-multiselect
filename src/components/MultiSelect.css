@@ -139,15 +139,10 @@ li.groupChildEle {
 
 .icon_down_dir {
   position: absolute;
-  right: 10px;
+  right: 15px;
   top: 50%;
-  transform: translateY(-50%);
-  width: 14px;
+  transform: translateY(-70%) scale(2, 1);
   cursor: pointer;
-}
-
-.icon_down_dir:before {
-  content: '\e803';
 }
 
 .custom-close {

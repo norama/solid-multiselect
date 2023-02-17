@@ -11,11 +11,9 @@ import type { IOption, IStyle } from './option/Option'
 import Loading from './option/Loading'
 import NormalOptions from './option/NormalOptions'
 import GroupByOptions from './option/GroupByOptions'
-import SelectedList from './SelectedList'
+import SelectedChips from './SelectedChips'
 
-// const DownArrow = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Angle_down_font_awesome.svg/1200px-Angle_down_font_awesome.svg.png';
-const DownArrow =
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Angle_down_font_awesome.svg/1200px-Angle_down_font_awesome.svg.png'
+const DownArrow = '\u2304'
 
 const defaultProps = {
   emptyRecordMsg: 'No records found',
@@ -404,7 +402,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
         style={style['searchBox']}
         onClick={() => toggleOptionList()}
       >
-        <SelectedList
+        <SelectedChips
           singleSelect={singleSelect}
           selectedValues={selectedValues}
           style={style}
@@ -436,7 +434,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
           />
         </Show>
         <Show when={singleSelect || showArrow}>
-          <img class="icon_cancel icon_down_dir" src={DownArrow} />
+          <div class="icon_cancel icon_down_dir">{DownArrow}</div>
         </Show>
       </div>
       <div
