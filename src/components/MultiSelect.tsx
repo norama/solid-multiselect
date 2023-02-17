@@ -55,7 +55,6 @@ export interface IMultiSelectProps {
   avoidHighlightFirstOption?: boolean
   hidePlaceholder?: boolean
   showArrow?: boolean
-  keepSearchTerm?: boolean
   disable?: boolean
   searchable?: boolean
   loading?: boolean
@@ -85,7 +84,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     avoidHighlightFirstOption,
   } = local
 
-  const [toggleOptionsList, setToggleOptionsList] = createSignal(false)
+  const [optionListOpen, setOptionListOpen] = createSignal(false)
   const [highlightOption, setHighlightOption] = createSignal(avoidHighlightFirstOption ? -1 : 0)
   const [inputValue, setInputValue] = createSignal('')
   const [options, setOptions] = createSignal<IOption[]>(props.options)
@@ -93,8 +92,6 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   const [unfilteredOptions, setUnfilteredOptions] = createSignal(props.options)
   const [selectedValues, setSelectedValues] = createSignal<IOption[]>([...props.selectedValues])
   const [preSelectedValues, setPreSelectedValues] = createSignal([...props.selectedValues])
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [keepSearchTerm, setKeepSearchTerm] = createSignal(props.keepSearchTerm)
   const [groupedObject, setGroupedObject] = createSignal({})
 
   let optionTimeout: any
@@ -223,7 +220,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
 
   const onSingleSelect = (item: IOption) => {
     setSelectedValues([item])
-    setToggleOptionsList(false)
+    setOptionListOpen(false)
   }
 
   const onRemoveSelectedItem = (item: IOption) => {
@@ -246,9 +243,6 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   }
 
   const onSelectItem = (item: IOption) => () => {
-    if (!keepSearchTerm) {
-      setInputValue('')
-    }
     if (singleSelect) {
       onSingleSelect(item)
       props.onSelect([item], item)
@@ -287,7 +281,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   }
 
   const toggleOptionList = () => {
-    setToggleOptionsList(!toggleOptionsList())
+    setOptionListOpen(!optionListOpen())
     setHighlightOption(avoidHighlightFirstOption ? -1 : 0)
   }
 
@@ -301,16 +295,14 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     return value.toString().indexOf(search) > -1
   }
 
-  const filterOptionsByInput = () => {
+  const filterOptionsByInput = (val = inputValue()) => {
     let newOptions: IOption[]
     if (props.isObject) {
       newOptions = filteredOptions().filter((option) =>
-        matchValues(option[props.displayValue], inputValue())
+        matchValues(option[props.displayValue], val)
       )
     } else {
-      newOptions = filteredOptions().filter((option) =>
-        matchValues(option.toString(), inputValue())
-      )
+      newOptions = filteredOptions().filter((option) => matchValues(option.toString(), val))
     }
     groupByOptions(newOptions)
     setOptions(newOptions)
@@ -333,13 +325,13 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
       setSelectedValues([])
     }
 
-    setInputValue(event.target.value)
-    // TODO: Fix wait setInputValue
+    const val = event.target.value
+    setInputValue(val)
     setTimeout(() => {
-      filterOptionsByInput()
+      filterOptionsByInput(val)
     }, 0)
     if (props.onSearch) {
-      props.onSearch(event.target.value)
+      props.onSearch(val)
     }
   }
 
@@ -347,10 +339,10 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     if (singleSelect) {
       setOptions(props.options)
     }
-    if (toggleOptionsList()) {
+    if (optionListOpen()) {
       clearTimeout(optionTimeout)
     } else {
-      toggleOptionList()
+      optionTimeout = setTimeout(() => setOptionListOpen(true), 150)
     }
   }
 
@@ -359,11 +351,12 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
       setSelectedValues([...props.selectedValues])
     }
 
-    if (toggleOptionsList()) {
-      optionTimeout = setTimeout(() => setToggleOptionsList(false), 150)
-      if (singleSelect) {
-        setInputValue('')
-      }
+    if (optionListOpen()) {
+      optionTimeout = setTimeout(() => {
+        setOptionListOpen(false)
+      }, 150)
+    } else {
+      clearTimeout(optionTimeout)
     }
   }
 
@@ -391,7 +384,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
       } else {
         setHighlightOption(0)
       }
-    } else if (e.key === 'Enter' && options().length && toggleOptionsList()) {
+    } else if (e.key === 'Enter' && options().length && optionListOpen()) {
       if (highlightOption() === -1) {
         return
       }
@@ -405,7 +398,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
       classList={{ disable_ms: disable }}
       id={id || 'multiSelectContainerSolid'}
       style={style['multiSelectContainer']}
-      onBlur={() => setToggleOptionsList(false)}
+      onBlur={() => setOptionListOpen(false)}
       tabIndex={0}
     >
       <div
@@ -453,7 +446,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
       </div>
       <div
         class="optionListContainer"
-        classList={{ displayBlock: toggleOptionsList(), displayNone: !toggleOptionsList() }}
+        classList={{ displayBlock: optionListOpen(), displayNone: !optionListOpen() }}
       >
         {props.loading && <Loading style={props.style} loadingMessage={props.loadingMessage} />}
         {!props.groupBy ? (
