@@ -48,7 +48,6 @@ export interface IMultiSelectProps {
   onSelect?: (selectedList: IOption[], selectedItem: IOption) => void
   onRemove?: (selectedList: IOption[], selectedItem: IOption) => void
   onSearch?: (value: string) => void
-  closeIcon?: string
   singleSelect?: boolean
   caseSensitiveSearch?: boolean
   id?: string
@@ -61,14 +60,6 @@ export interface IMultiSelectProps {
   searchable?: boolean
   loading?: boolean
   loadingMessage?: string
-  customCloseIcon?: Element | string
-}
-
-const closeIconTypes = {
-  circle: DownArrow, // CloseCircleDark,
-  circle2: DownArrow, // CloseCircle
-  // close: CloseSquare,
-  // cancel: CloseLine
 }
 
 export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectProps) => {
@@ -104,10 +95,6 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   const [preSelectedValues, setPreSelectedValues] = createSignal([...props.selectedValues])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [keepSearchTerm, setKeepSearchTerm] = createSignal(props.keepSearchTerm)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [closeIconType, setCloseIconType] = createSignal(
-    closeIconTypes[props.closeIcon] || closeIconTypes['circle']
-  )
   const [groupedObject, setGroupedObject] = createSignal({})
 
   let optionTimeout: any
@@ -253,7 +240,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     if (!props.showCheckbox) {
       removeSelectedValuesFromOptions(true)
     }
-    if (!props.closeOnSelect) {
+    if (!props.closeOnSelect && searchBox) {
       searchBox.focus()
     }
   }
@@ -288,7 +275,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
       filterOptionsByInput()
     }
 
-    if (!props.closeOnSelect) {
+    if (!props.closeOnSelect && searchBox) {
       searchBox.focus()
     }
   }
@@ -436,8 +423,6 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
           onRemoveSelectedItem={onRemoveSelectedItem}
           displayValue={props.displayValue}
           isObject={props.isObject}
-          customCloseIcon={props.customCloseIcon}
-          closeIconType={closeIconType}
         />
         <Show when={props.searchable}>
           <input

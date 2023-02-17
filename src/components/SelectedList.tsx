@@ -1,6 +1,8 @@
 import type { IOption, IStyle } from './option/Option'
 import { Show, For } from 'solid-js'
 
+const X = '\u2573'
+
 type Props = {
   singleSelect?: boolean
   selectedValues: () => IOption[]
@@ -9,8 +11,6 @@ type Props = {
   onRemoveSelectedItem: (IOption) => void
   displayValue?: string
   isObject?: boolean
-  customCloseIcon?: Element | string
-  closeIconType: () => string
 }
 
 const SelectedList = ({
@@ -21,8 +21,6 @@ const SelectedList = ({
   onRemoveSelectedItem,
   displayValue,
   isObject,
-  customCloseIcon,
-  closeIconType,
 }: Props) => {
   return (
     <For each={selectedValues()}>
@@ -36,21 +34,10 @@ const SelectedList = ({
           style={style['chips']}
         >
           {!isObject ? (value || '').toString() : value[displayValue]}
-          <Show when={!isDisablePreSelectedValues(value)}>
-            <Show
-              when={!customCloseIcon}
-              fallback={() => (
-                <i class="custom-close" onClick={() => onRemoveSelectedItem(value)}>
-                  {customCloseIcon}
-                </i>
-              )}
-            >
-              <img
-                class="icon_cancel closeIcon"
-                src={closeIconType()}
-                onClick={() => onRemoveSelectedItem(value)}
-              />
-            </Show>
+          <Show when={!singleSelect && !isDisablePreSelectedValues(value)}>
+            <span class="icon_cancel closeIcon" onClick={() => onRemoveSelectedItem(value)}>
+              {X}
+            </span>
           </Show>
         </span>
       )}

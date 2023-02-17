@@ -58,10 +58,9 @@
 }
 
 .closeIcon {
-  height: 13px;
-  width: 13px;
+  font-size: xx-small;
   float: right;
-  margin-left: 5px;
+  margin-left: 8px;
   cursor: pointer;
 }
 
