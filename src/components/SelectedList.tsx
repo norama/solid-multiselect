@@ -9,8 +9,7 @@ type Props = {
   style: IStyle
   isDisablePreSelectedValues: (IOption) => boolean
   onRemoveSelectedItem: (IOption) => void
-  displayValue?: string
-  isObject?: boolean
+  displayKey?: string
 }
 
 const SelectedList = ({
@@ -19,8 +18,7 @@ const SelectedList = ({
   style,
   isDisablePreSelectedValues,
   onRemoveSelectedItem,
-  displayValue,
-  isObject,
+  displayKey,
 }: Props) => {
   return (
     <For each={selectedValues()}>
@@ -33,7 +31,7 @@ const SelectedList = ({
           }}
           style={style['chips']}
         >
-          {!isObject ? (value || '').toString() : value[displayValue]}
+          {!displayKey ? (value || '').toString() : value[displayKey]}
           <Show when={!singleSelect && !isDisablePreSelectedValues(value)}>
             <span class="icon_cancel closeIcon" onClick={() => onRemoveSelectedItem(value)}>
               {X}

@@ -40,8 +40,8 @@ const MultiSelectDemo = () => {
             color: 'pink',
           },
         ]}
-        isObject
-        displayValue="color"
+        idKey="id"
+        displayKey="color"
         onSelect={console.log}
         onRemove={console.log}
         selectedValues={[
@@ -72,9 +72,8 @@ const MultiSelectDemo = () => {
 
       <h3>With disabled option selected</h3>
       <MultiSelect
-        isObject
         options={groupedOptions}
-        displayValue="value"
+        displayKey="value"
         groupBy="cat"
         disablePreSelectedValues
         selectedValues={[groupedOptions[1]]}
@@ -109,11 +108,11 @@ const MultiSelectDemo = () => {
         style={{ notFound: { color: 'green' } }}
         options={groupedOptions}
         groupBy="group"
-        displayValue={'value'}
+        idKey="key"
+        displayKey="value"
         onSelect={console.log}
         onRemove={console.log}
         showCheckbox={true}
-        isObject
       />
     </>
   )

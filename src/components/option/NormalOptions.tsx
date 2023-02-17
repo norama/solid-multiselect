@@ -5,8 +5,7 @@ type Props = {
   options: () => IOption[]
   emptyRecordMsg: string
   style: IStyle
-  isObject?: boolean
-  displayValue?: string
+  displayKey?: string
   showCheckbox?: boolean
   singleSelect?: boolean
   onSelectItem: (Option) => () => void
@@ -19,8 +18,7 @@ const NormalOptions = ({
   options,
   emptyRecordMsg = 'No Options Available',
   style,
-  isObject,
-  displayValue,
+  displayKey,
   showCheckbox,
   singleSelect,
   onSelectItem,
@@ -51,8 +49,8 @@ const NormalOptions = ({
             <Show when={showCheckbox && !singleSelect}>
               <input type="checkbox" readOnly class="checkbox" checked={isSelectedValue(option)} />
             </Show>
-            <Show when={isObject} fallback={() => (option || '').toString()}>
-              {option[displayValue]}
+            <Show when={!!displayKey} fallback={() => (option || '').toString()}>
+              {option[displayKey]}
             </Show>
           </li>
         )}

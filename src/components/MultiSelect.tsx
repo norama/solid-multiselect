@@ -37,8 +37,8 @@ export interface IMultiSelectProps {
   options: IOption[]
   disablePreSelectedValues?: boolean
   selectedValues?: IOption[]
-  isObject?: boolean
-  displayValue?: string
+  idKey?: string
+  displayKey?: string
   showCheckbox?: boolean
   selectionLimit?: number
   placeholder?: string
@@ -94,16 +94,16 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   const [preSelectedValues, setPreSelectedValues] = createSignal([...props.selectedValues])
   const [groupedObject, setGroupedObject] = createSignal({})
 
+  const idKey = props.idKey ?? props.displayKey
+  const displayKey = props.displayKey ?? props.idKey
+
   let optionTimeout: any
   let searchBox: HTMLInputElement
   const searchWrapper = (el: HTMLDivElement) => el.addEventListener('click', listenerCallback)
 
   const isSelectedValue = (item: IOption) => {
-    if (props.isObject) {
-      return (
-        selectedValues().filter((i: IOption) => i[props.displayValue] === item[props.displayValue])
-          .length > 0
-      )
+    if (idKey) {
+      return selectedValues().filter((i: IOption) => i[idKey] === item[idKey]).length > 0
     }
     return selectedValues().filter((i) => i === item).length > 0
   }
@@ -134,11 +134,8 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     if (!props.disablePreSelectedValues || !preSelectedValues().length) {
       return false
     }
-    if (props.isObject) {
-      return (
-        preSelectedValues().filter((i) => i[props.displayValue] === value[props.displayValue])
-          .length > 0
-      )
+    if (idKey) {
+      return preSelectedValues().filter((i) => i[idKey] === value[idKey]).length > 0
     }
     return preSelectedValues().filter((i) => i === value).length > 0
   }
@@ -150,13 +147,9 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     if (!selectedValues().length && !skipCheck) {
       return
     }
-    if (props.isObject) {
+    if (idKey) {
       const optionList = unfilteredOptions().filter((item) => {
-        return selectedValues().findIndex(
-          (v) => v[props.displayValue] === item[props.displayValue]
-        ) === -1
-          ? true
-          : false
+        return selectedValues().findIndex((v) => v[idKey] === item[idKey]) === -1 ? true : false
       })
       if (props.groupBy) {
         groupByOptions(optionList)
@@ -226,8 +219,8 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   const onRemoveSelectedItem = (item: IOption) => {
     let index = 0
     const newSelectedValues = [...selectedValues()]
-    if (props.isObject) {
-      index = newSelectedValues.findIndex((i) => i[props.displayValue] === item[props.displayValue])
+    if (idKey) {
+      index = newSelectedValues.findIndex((i) => i[idKey] === item[idKey])
     } else {
       index = newSelectedValues.indexOf(item)
     }
@@ -297,10 +290,8 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
 
   const filterOptionsByInput = (val = inputValue()) => {
     let newOptions: IOption[]
-    if (props.isObject) {
-      newOptions = filteredOptions().filter((option) =>
-        matchValues(option[props.displayValue], val)
-      )
+    if (displayKey) {
+      newOptions = filteredOptions().filter((option) => matchValues(option[displayKey], val))
     } else {
       newOptions = filteredOptions().filter((option) => matchValues(option.toString(), val))
     }
@@ -414,8 +405,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
           style={style}
           isDisablePreSelectedValues={isDisablePreSelectedValues}
           onRemoveSelectedItem={onRemoveSelectedItem}
-          displayValue={props.displayValue}
-          isObject={props.isObject}
+          displayKey={displayKey}
         />
         <Show when={props.searchable}>
           <input
@@ -454,8 +444,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
             options={options}
             emptyRecordMsg={props.emptyRecordMsg}
             style={props.style}
-            isObject={props.isObject}
-            displayValue={props.displayValue}
+            displayKey={displayKey}
             showCheckbox={props.showCheckbox}
             singleSelect={props.singleSelect}
             onSelectItem={onSelectItem}
@@ -467,8 +456,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
           <GroupByOptions
             groupedObject={groupedObject}
             style={style}
-            isObject={props.isObject}
-            displayValue={props.displayValue}
+            displayKey={displayKey}
             showCheckbox={props.showCheckbox}
             singleSelect={props.singleSelect}
             onSelectItem={onSelectItem}

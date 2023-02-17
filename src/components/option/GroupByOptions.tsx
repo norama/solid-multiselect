@@ -4,8 +4,7 @@ import { Show, For } from 'solid-js'
 type Props = {
   groupedObject: () => object
   style: IStyle
-  isObject?: boolean
-  displayValue?: string
+  displayKey?: string
   showCheckbox?: boolean
   singleSelect?: boolean
   onSelectItem: (Option) => () => void
@@ -17,8 +16,7 @@ type Props = {
 const GroupByOptions = ({
   groupedObject,
   style,
-  isObject,
-  displayValue,
+  displayKey,
   showCheckbox,
   singleSelect,
   onSelectItem,
@@ -53,7 +51,7 @@ const GroupByOptions = ({
                       checked={isSelectedValue(option)}
                     />
                   </Show>
-                  {isObject ? option[displayValue] : (option || '').toString()}
+                  {!!displayKey ? option[displayKey] : (option || '').toString()}
                 </li>
               )}
             </For>
