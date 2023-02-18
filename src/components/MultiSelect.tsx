@@ -12,6 +12,7 @@ import Loading from './option/Loading'
 import NormalOptions from './option/NormalOptions'
 import GroupByOptions from './option/GroupByOptions'
 import SelectedChips from './SelectedChips'
+import SelectedList from './SelectedList'
 
 const DownArrow = '\u2304'
 
@@ -469,6 +470,18 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
           />
         )}
       </div>
+      <Show when={!props.singleSelect}>
+        <div class="optionListContainer">
+          <SelectedList
+            selectedValues={selectedValues}
+            style={style}
+            displayKey={displayKey}
+            fadeOutSelection={fadeOutSelection}
+            isDisablePreSelectedValues={isDisablePreSelectedValues}
+            onRemoveSelectedItem={onRemoveSelectedItem}
+          />
+        </div>
+      </Show>
     </div>
   )
 }
