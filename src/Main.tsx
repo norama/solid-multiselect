@@ -19,7 +19,7 @@ const MultiSelectDemo = () => {
     <>
       <h3>Array String Multiselect</h3>
       <MultiSelect
-        options={['yellow', 'blue', 'pink', 'white']}
+        options={['yellow', 'blue', 'pink', 'white', 'cyan', 'green', 'orange', 'red']}
         onSelect={console.log}
         onRemove={console.log}
         selectedValues={['yellow', 'pink']}

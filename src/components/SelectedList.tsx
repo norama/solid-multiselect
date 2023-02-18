@@ -21,28 +21,30 @@ const SelectedList = ({
   fadeOutSelection,
 }: Props) => {
   return (
-    <ul class="optionContainer" style={style['optionContainer']}>
-      <For each={selectedValues()}>
-        {(value) => (
-          <li
-            style={style['option']}
-            class="option"
-            classList={{
-              disableSelection: fadeOutSelection(value),
-            }}
-          >
-            <Show when={!isDisablePreSelectedValues(value)}>
-              <span class="icon_cancel closeIcon" onClick={() => onRemoveSelectedItem(value)}>
-                {X}
-              </span>
-            </Show>
-            <Show when={!!displayKey} fallback={() => (value || '').toString()}>
-              {value[displayKey]}
-            </Show>
-          </li>
-        )}
-      </For>
-    </ul>
+    <Show when={selectedValues().length}>
+      <ul class="selectedList" style={style['selectedListContainer']}>
+        <For each={selectedValues()}>
+          {(value) => (
+            <li
+              style={style['option']}
+              class="option"
+              classList={{
+                disableSelection: fadeOutSelection(value),
+              }}
+            >
+              <Show when={!isDisablePreSelectedValues(value)}>
+                <span class="icon_cancel closeIcon" onClick={() => onRemoveSelectedItem(value)}>
+                  {X}
+                </span>
+              </Show>
+              <Show when={!!displayKey} fallback={() => (value || '').toString()}>
+                {value[displayKey]}
+              </Show>
+            </li>
+          )}
+        </For>
+      </ul>
+    </Show>
   )
 }
 

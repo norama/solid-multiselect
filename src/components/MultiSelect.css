@@ -87,7 +87,7 @@
   padding: 8px 8px;
 }
 
-.multiSelectContainer li:hover {
+.optionContainer li:hover {
   background: #0096fb;
   color: #fff;
   cursor: pointer;

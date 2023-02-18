@@ -438,11 +438,16 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
           <div class="icon_cancel icon_down_dir">{DownArrow}</div>
         </Show>
       </div>
+
       <div
         class="optionListContainer"
+        style={style['optionListContainer']}
         classList={{ displayBlock: optionListOpen(), displayNone: !optionListOpen() }}
       >
-        {props.loading && <Loading style={props.style} loadingMessage={props.loadingMessage} />}
+        <Show when={props.loading}>
+          <Loading style={props.style} loadingMessage={props.loadingMessage} />
+        </Show>
+
         {!props.groupBy ? (
           <NormalOptions
             options={options}
@@ -471,7 +476,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
         )}
       </div>
       <Show when={!props.singleSelect}>
-        <div class="optionListContainer">
+        <div class="selectedListContainer">
           <SelectedList
             selectedValues={selectedValues}
             style={style}
