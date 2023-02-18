@@ -83,6 +83,10 @@
   overflow-y: auto;
 }
 
+.selectedListContainer {
+  margin-bottom: 10px;
+}
+
 .multiSelectContainer li {
   padding: 8px 8px;
 }

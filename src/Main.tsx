@@ -20,6 +20,7 @@ const MultiSelectDemo = () => {
       <h3>Array String Multiselect</h3>
       <MultiSelect
         options={['yellow', 'blue', 'pink', 'white', 'cyan', 'green', 'orange', 'red']}
+        type="multiList"
         onSelect={console.log}
         onRemove={console.log}
         selectedValues={['yellow', 'pink']}
@@ -88,8 +89,7 @@ const MultiSelectDemo = () => {
         options={['one', 'two', 'three']}
         onSelect={console.log}
         onRemove={console.log}
-        singleSelect
-        // selectionLimit={1}
+        type="single"
       />
       <h3>Single Select with handler, non-searchable</h3>
       <MultiSelect
@@ -100,7 +100,7 @@ const MultiSelectDemo = () => {
         searchable={false}
         onSelect={handleSingleSelect}
         onRemove={console.log}
-        singleSelect
+        type="single"
         // selectionLimit={1}
       />
       <h3>Grouped Options</h3>

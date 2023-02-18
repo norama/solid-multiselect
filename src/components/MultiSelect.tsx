@@ -21,7 +21,7 @@ const defaultProps = {
   options: [],
   selectedValues: [],
   showArrow: false,
-  singleSelect: false,
+  type: 'multiChips',
   style: {},
   placeholder: 'select',
   groupBy: '',
@@ -47,7 +47,7 @@ export interface IMultiSelectProps {
   onSelect?: (selectedList: IOption[], selectedItem: IOption) => void
   onRemove?: (selectedList: IOption[], selectedItem: IOption) => void
   onSearch?: (value: string) => void
-  singleSelect?: boolean
+  type?: 'single' | 'multiChips' | 'multiList'
   caseSensitiveSearch?: boolean
   id?: string
   closeOnSelect?: boolean
@@ -65,7 +65,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   const [local] = splitProps(props, [
     'placeholder',
     'style',
-    'singleSelect',
+    'type',
     'id',
     'hidePlaceholder',
     'disabled',
@@ -75,7 +75,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   const {
     placeholder,
     style,
-    singleSelect,
+    type,
     id,
     hidePlaceholder,
     disabled,
@@ -95,6 +95,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
 
   const idKey = props.idKey ?? props.displayKey
   const displayKey = props.displayKey ?? props.idKey
+  const singleSelect = type === 'single'
 
   let optionTimeout: any
   let searchBox: HTMLInputElement
@@ -108,7 +109,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   }
 
   const fadeOutSelection = (item: IOption) => {
-    if (props.singleSelect) {
+    if (singleSelect) {
       return
     }
     if (props.selectionLimit == -1) {
@@ -172,7 +173,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   }
 
   const initialSetValue = () => {
-    if (!props.showCheckbox && !props.singleSelect) {
+    if (!props.showCheckbox && !singleSelect) {
       removeSelectedValuesFromOptions(false)
     }
 
@@ -396,6 +397,18 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
       onBlur={() => setOptionListOpen(false)}
       tabIndex={0}
     >
+      <Show when={type === 'multiList'}>
+        <div class="selectedListContainer">
+          <SelectedList
+            selectedValues={selectedValues}
+            style={style}
+            displayKey={displayKey}
+            fadeOutSelection={fadeOutSelection}
+            isDisablePreSelectedValues={isDisablePreSelectedValues}
+            onRemoveSelectedItem={onRemoveSelectedItem}
+          />
+        </div>
+      </Show>
       <div
         class="search-wrapper searchWrapper"
         classList={{ singleSelect }}
@@ -403,14 +416,16 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
         style={style['searchBox']}
         onClick={() => toggleOptionList()}
       >
-        <SelectedChips
-          singleSelect={singleSelect}
-          selectedValues={selectedValues}
-          style={style}
-          isDisablePreSelectedValues={isDisablePreSelectedValues}
-          onRemoveSelectedItem={onRemoveSelectedItem}
-          displayKey={displayKey}
-        />
+        <Show when={type !== 'multiList'}>
+          <SelectedChips
+            singleSelect={singleSelect}
+            selectedValues={selectedValues}
+            style={style}
+            isDisablePreSelectedValues={isDisablePreSelectedValues}
+            onRemoveSelectedItem={onRemoveSelectedItem}
+            displayKey={displayKey}
+          />
+        </Show>
         <Show when={props.searchable}>
           <input
             type="text"
@@ -455,7 +470,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
             style={props.style}
             displayKey={displayKey}
             showCheckbox={props.showCheckbox}
-            singleSelect={props.singleSelect}
+            singleSelect={singleSelect}
             onSelectItem={onSelectItem}
             fadeOutSelection={fadeOutSelection}
             highlightOption={highlightOption}
@@ -467,7 +482,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
             style={style}
             displayKey={displayKey}
             showCheckbox={props.showCheckbox}
-            singleSelect={props.singleSelect}
+            singleSelect={singleSelect}
             onSelectItem={onSelectItem}
             fadeOutSelection={fadeOutSelection}
             isDisablePreSelectedValues={isDisablePreSelectedValues}
@@ -475,18 +490,6 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
           />
         )}
       </div>
-      <Show when={!props.singleSelect}>
-        <div class="selectedListContainer">
-          <SelectedList
-            selectedValues={selectedValues}
-            style={style}
-            displayKey={displayKey}
-            fadeOutSelection={fadeOutSelection}
-            isDisablePreSelectedValues={isDisablePreSelectedValues}
-            onRemoveSelectedItem={onRemoveSelectedItem}
-          />
-        </div>
-      </Show>
     </div>
   )
 }
