@@ -2,9 +2,14 @@
 
 This is a fork of [Solid MultiSelect](https://github.com/digichanges/solid-multiselect).
 
+The original [Demo](https://codesandbox.io/s/solidjs-multiselect-demo-db55z?file=/src/main.tsx)
+is deployed [HERE](https://solid-multiselect.vercel.app/).
+
 Changes:
 
-- Included in a SolidJS application containing examples from the [Demo](https://codesandbox.io/s/solidjs-multiselect-demo-db55z?file=/src/main.tsx). MultiSelect component implementation moved to the `src/components` directory.
+- MultiSelect component is included in a SolidJS application containing examples from the
+  [Demo](https://codesandbox.io/s/solidjs-multiselect-demo-db55z?file=/src/main.tsx).
+  The MultiSelect component source is moved to the `src/components` directory.
 
 - Major property changes, see below.
 
@@ -52,13 +57,13 @@ Changes:
 }
 ```
 
-# Install
+# Install as npm package
 
 ```bash
 npm i '@norama.matema/solid-multiselect'
 ```
 
-# Clone and Run
+# Clone and Run project
 
 ## Git clone
 
