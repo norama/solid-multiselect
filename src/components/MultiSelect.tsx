@@ -392,6 +392,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
       id={id || 'multiSelectContainerSolid'}
       style={style['multiSelectContainer']}
       onBlur={() => setOptionListOpen(false)}
+      tabIndex={-1}
     >
       <Show when={type === 'multiList'}>
         <div class="selectedListContainer">
