@@ -33,9 +33,9 @@ const SelectedList = ({
               }}
             >
               <Show when={!isDisablePreSelectedValues(value)}>
-                <span class="icon_cancel closeIcon" onClick={() => onRemoveSelectedItem(value)}>
+                <div class="icon_cancel closeIcon" onClick={() => onRemoveSelectedItem(value)}>
                   {X}
-                </span>
+                </div>
               </Show>
               <Show when={!!displayKey} fallback={() => (value || '').toString()}>
                 {value[displayKey]}

@@ -6,11 +6,50 @@ Changes:
 
 - Included in a SolidJS application containing examples from the [Demo](https://codesandbox.io/s/solidjs-multiselect-demo-db55z?file=/src/main.tsx). MultiSelect component implementation moved to the `src/components` directory.
 
-- In `singleSelect` mode the original selected element is restored upon blur.
+- Major property changes, see below.
 
 - Added `searchable` property: search box with filtering if `true`, no filtering if `false`. Default: `true`. It is useful to set to `false` for simple selects with a few options only.
 
 - `MultiSelect.css` is no longer imported, copy to your project, include and modify accordingly.
+
+# Properties
+
+- `type`: selector type:
+  - `single`: single select
+  - `multiChips`: multi select with chip display in selector (default)
+  - `multiList`: multi select with list display above selector
+- `options`: option array of strings, numbers or records
+- `selectedValues`: array of selected options
+- `idKey`: key of `id` field (unique ID for comparison) in case of record options
+- `displayKey`: key of field to display in case of record in case of record options (default: same as `idKey`)
+- `showCheckbox`: show checkbox in front of option in dropdown selector
+- `selectionLimit`: max number of selected items
+- `searchable`: `true` for quick search input in selector
+- `caseSensitiveSearch`: `true` for case sensitive quick search
+- `disabled`: `true` if disabled
+- `id`: widget `id`
+- `showArrow`: show down arrow
+- `groupBy`: key of field for grouping options in case of record options,
+  the key is also used for group title
+- `onSelect`: `(selectedList: IOption[], selectedItem: IOption) => void` select callback
+- `onRemove`: `(selectedList: IOption[], removedItem: IOption) => void` remove callback
+- `onSearch`: `(value: string) => void` search
+- `placeholder`: placeholder in search input (default: 'select')
+- `emptyRecordMsg`: no record matching search string message (default: 'No records found')
+- `loading`: `true` if loading state
+- `loadingMessage`: message shown in loading state (default: 'loading...')
+- `style`: custom styles grouped by components:
+
+```
+{
+  optionListContainer?: JSX.CSSProperties
+  selectedListContainer?: JSX.CSSProperties
+  optionContainer?: JSX.CSSProperties
+  option?: JSX.CSSProperties
+  notFound?: JSX.CSSProperties
+  loadingMessage?: JSX.CSSProperties
+}
+```
 
 # Install
 

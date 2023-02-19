@@ -45,12 +45,11 @@ export interface IMultiSelectProps {
   style?: IStyle
   emptyRecordMsg?: string
   onSelect?: (selectedList: IOption[], selectedItem: IOption) => void
-  onRemove?: (selectedList: IOption[], selectedItem: IOption) => void
+  onRemove?: (selectedList: IOption[], removedItem: IOption) => void
   onSearch?: (value: string) => void
   type?: 'single' | 'multiChips' | 'multiList'
   caseSensitiveSearch?: boolean
   id?: string
-  closeOnSelect?: boolean
   avoidHighlightFirstOption?: boolean
   hidePlaceholder?: boolean
   showArrow?: boolean
@@ -232,9 +231,6 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     if (!props.showCheckbox) {
       removeSelectedValuesFromOptions(true)
     }
-    if (!props.closeOnSelect && searchBox) {
-      searchBox.focus()
-    }
   }
 
   const onSelectItem = (item: IOption) => () => {
@@ -264,7 +260,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
       filterOptionsByInput()
     }
 
-    if (!props.closeOnSelect && searchBox) {
+    if (searchBox) {
       searchBox.focus()
     }
   }
@@ -395,7 +391,6 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
       id={id || 'multiSelectContainerSolid'}
       style={style['multiSelectContainer']}
       onBlur={() => setOptionListOpen(false)}
-      tabIndex={0}
     >
       <Show when={type === 'multiList'}>
         <div class="selectedListContainer">
@@ -447,6 +442,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
             style={style['inputField']}
             autocomplete="off"
             disabled={disabled}
+            tabIndex={1}
           />
         </Show>
         <Show when={singleSelect || showArrow}>
