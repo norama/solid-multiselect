@@ -75,7 +75,8 @@ const MultiSelectDemo = () => {
       <MultiSelect
         options={groupedOptions}
         displayKey="value"
-        groupBy="cat"
+        groupByKey="cat"
+        groupByDefault="Not categorized"
         disablePreSelectedValues
         selectedValues={[groupedOptions[1]]}
         showCheckbox={true}
@@ -107,7 +108,7 @@ const MultiSelectDemo = () => {
       <MultiSelect
         style={{ notFound: { color: 'green' } }}
         options={groupedOptions}
-        groupBy="group"
+        groupByKey="group"
         idKey="key"
         displayKey="value"
         onSelect={console.log}

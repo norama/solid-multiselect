@@ -29,8 +29,9 @@ Changes:
 - `disabled`: `true` if disabled
 - `id`: widget `id`
 - `showArrow`: show down arrow
-- `groupBy`: key of field for grouping options in case of record options,
+- `groupByKey`: key of field for grouping options in case of record options,
   the key is also used for group title
+- `groupByDefault`: group if group-by-key is missing (default: 'Others')
 - `onSelect`: `(selectedList: IOption[], selectedItem: IOption) => void` select callback
 - `onRemove`: `(selectedList: IOption[], removedItem: IOption) => void` remove callback
 - `onSearch`: `(value: string) => void` search

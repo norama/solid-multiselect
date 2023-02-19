@@ -24,7 +24,7 @@ const defaultProps = {
   type: 'multiChips',
   style: {},
   placeholder: 'select',
-  groupBy: '',
+  groupByDefault: 'Others',
   disabled: false,
   searchable: true,
   onSelect: () => {},
@@ -41,7 +41,8 @@ export interface IMultiSelectProps {
   showCheckbox?: boolean
   selectionLimit?: number
   placeholder?: string
-  groupBy?: string
+  groupByKey?: string
+  groupByDefault?: string
   style?: IStyle
   emptyRecordMsg?: string
   onSelect?: (selectedList: IOption[], selectedItem: IOption) => void
@@ -140,7 +141,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   }
 
   const removeSelectedValuesFromOptions = (skipCheck: boolean) => {
-    if (!skipCheck && props.groupBy) {
+    if (!skipCheck && props.groupByKey) {
       groupByOptions(options())
     }
     if (!selectedValues().length && !skipCheck) {
@@ -150,7 +151,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
       const optionList = unfilteredOptions().filter((item) => {
         return selectedValues().findIndex((v) => v[idKey] === item[idKey]) === -1 ? true : false
       })
-      if (props.groupBy) {
+      if (props.groupByKey) {
         groupByOptions(optionList)
       }
       setOptions(optionList)
@@ -176,7 +177,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
       removeSelectedValuesFromOptions(false)
     }
 
-    if (props.groupBy) {
+    if (props.groupByKey) {
       groupByOptions(options())
     }
   }
@@ -301,9 +302,9 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   }
 
   const groupByOptions = (options: IOption[]) => {
-    const groupBy = props.groupBy
+    const groupBy = props.groupByKey
     const groupedObject = options.reduce(function (r, a) {
-      const key = a[groupBy] || 'Others'
+      const key = a[groupBy] || props.groupByDefault
       r[key] = r[key] || []
       r[key].push(a)
       return r
@@ -459,7 +460,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
           <Loading style={props.style} loadingMessage={props.loadingMessage} />
         </Show>
 
-        {!props.groupBy ? (
+        {!props.groupByKey ? (
           <NormalOptions
             options={options}
             emptyRecordMsg={props.emptyRecordMsg}
