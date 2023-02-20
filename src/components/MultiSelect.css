@@ -96,6 +96,9 @@
 .optionContainer li:hover {
   background: #0096fb;
   color: #fff;
+}
+
+.optionContainer .option {
   cursor: pointer;
 }
 
