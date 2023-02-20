@@ -59,6 +59,7 @@
 
 .closeIcon {
   font-size: xx-small;
+  line-height: 2;
   float: right;
   margin-left: 8px;
   cursor: pointer;
