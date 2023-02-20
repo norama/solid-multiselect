@@ -353,38 +353,6 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     }
   }
 
-  const onArrowKeyNavigation = (e) => {
-    if (
-      e.keyCode === 8 &&
-      !inputValue() &&
-      !props.disablePreSelectedValues &&
-      selectedValues().length
-    ) {
-      onRemoveSelectedItem(selectedValues().length - 1)
-    }
-    if (!options().length) {
-      return
-    }
-    if (e.keyCode === 38) {
-      if (highlightOption() > 0) {
-        setHighlightOption((previousState) => previousState - 1)
-      } else {
-        setHighlightOption(options().length - 1)
-      }
-    } else if (e.keyCode === 40) {
-      if (highlightOption() < options().length - 1) {
-        setHighlightOption((previousState) => previousState + 1)
-      } else {
-        setHighlightOption(0)
-      }
-    } else if (e.key === 'Enter' && options().length && optionListOpen()) {
-      if (highlightOption() === -1) {
-        return
-      }
-      onSelectItem(options()[highlightOption()])()
-    }
-  }
-
   return (
     <div
       class="multiSelect-container multiSelectContainer"
@@ -440,7 +408,6 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
                 ? ''
                 : placeholder
             }
-            onKeyDown={onArrowKeyNavigation}
             style={style['inputField']}
             autocomplete="off"
             disabled={disabled}
