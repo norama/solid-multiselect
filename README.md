@@ -48,10 +48,12 @@ Changes:
 
 ```
 {
+  multiSelectContainer?: JSX.CSSProperties
   optionListContainer?: JSX.CSSProperties
   selectedListContainer?: JSX.CSSProperties
   optionContainer?: JSX.CSSProperties
   option?: JSX.CSSProperties
+  inputField?: JSX.CSSProperties
   notFound?: JSX.CSSProperties
   loadingMessage?: JSX.CSSProperties
 }
