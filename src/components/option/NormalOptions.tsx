@@ -47,7 +47,12 @@ const NormalOptions = ({
             onClick={onSelectItem(option)}
           >
             <Show when={showCheckbox && !singleSelect}>
-              <input type="checkbox" readOnly class="checkbox" checked={isSelectedValue(option)} />
+              <input
+                type="checkbox"
+                readOnly
+                class="checkbox optionCheckbox"
+                checked={isSelectedValue(option)}
+              />
             </Show>
             <Show when={!!displayKey} fallback={() => (option || '').toString()}>
               {option[displayKey]}

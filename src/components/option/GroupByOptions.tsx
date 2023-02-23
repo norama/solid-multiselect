@@ -46,7 +46,7 @@ const GroupByOptions = ({
                   <Show when={showCheckbox && !singleSelect}>
                     <input
                       type="checkbox"
-                      class="checkbox"
+                      class="checkbox optionCheckbox"
                       readOnly
                       checked={isSelectedValue(option)}
                     />

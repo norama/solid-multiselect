@@ -98,6 +98,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   const singleSelect = type === 'single'
 
   let optionTimeout: any
+  let container: HTMLDivElement
   let searchBox: HTMLInputElement
   const searchWrapper = (el: HTMLDivElement) => el.addEventListener('click', listenerCallback)
 
@@ -260,10 +261,6 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     } else {
       filterOptionsByInput()
     }
-
-    if (searchBox) {
-      searchBox.focus()
-    }
   }
 
   const listenerCallback = () => {
@@ -359,8 +356,9 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
       classList={{ disable_ms: disabled }}
       id={id || 'multiSelectContainerSolid'}
       style={style['multiSelectContainer']}
-      onBlur={() => setOptionListOpen(false)}
+      onBlur={(e) => setOptionListOpen(false)}
       tabIndex={-1}
+      ref={container}
     >
       <Show when={type === 'multiList'}>
         <div class="selectedListContainer">
@@ -379,7 +377,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
         classList={{ singleSelect }}
         ref={searchWrapper}
         style={style['searchBox']}
-        onClick={() => toggleOptionList()}
+        onClick={(e) => toggleOptionList()}
       >
         <Show when={type !== 'multiList'}>
           <SelectedChips
@@ -401,7 +399,19 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
             onInput={onInput}
             value={inputValue()}
             onFocus={onFocus}
-            onBlur={onBlur}
+            onBlur={(e) => {
+              if (e.relatedTarget === container) {
+                return
+              }
+              if (
+                e.relatedTarget instanceof HTMLInputElement &&
+                (e.relatedTarget as HTMLInputElement).classList.contains('optionCheckbox') &&
+                e.relatedTarget.checked
+              ) {
+                return
+              }
+              onBlur()
+            }}
             placeholder={
               (singleSelect && selectedValues().length) ||
               (hidePlaceholder && selectedValues().length)

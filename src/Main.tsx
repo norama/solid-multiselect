@@ -25,6 +25,15 @@ const MultiSelectDemo = () => {
         onRemove={console.log}
         selectedValues={['yellow', 'pink']}
       />
+      <h3>Array String Multiselect, checkbox</h3>
+      <MultiSelect
+        options={['yellow', 'blue', 'pink', 'white', 'cyan', 'green', 'orange', 'red']}
+        type="multiList"
+        onSelect={console.log}
+        onRemove={console.log}
+        selectedValues={['yellow', 'pink']}
+        showCheckbox
+      />
       <h3>Array Objects MultiSelect</h3>
       <MultiSelect
         options={[
