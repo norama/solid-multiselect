@@ -100,7 +100,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   let optionTimeout: any
   let container: HTMLDivElement
   let searchBox: HTMLInputElement
-  const searchWrapper = (el: HTMLDivElement) => el.addEventListener('click', listenerCallback)
+  let searchWrapper: HTMLDivElement
 
   const isSelectedValue = (item: IOption) => {
     if (idKey) {
@@ -260,12 +260,6 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
       removeSelectedValuesFromOptions(true)
     } else {
       filterOptionsByInput()
-    }
-  }
-
-  const listenerCallback = () => {
-    if (searchBox) {
-      searchBox.focus()
     }
   }
 

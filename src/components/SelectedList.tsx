@@ -33,7 +33,11 @@ const SelectedList = ({
               }}
             >
               <Show when={!isDisablePreSelectedValues(value)}>
-                <div class="icon_cancel closeIcon" onMouseDown={() => onRemoveSelectedItem(value)}>
+                <div
+                  class="icon_cancel closeIcon"
+                  onClick={() => onRemoveSelectedItem(value)}
+                  onTouchStart={() => onRemoveSelectedItem(value)}
+                >
                   {X}
                 </div>
               </Show>
