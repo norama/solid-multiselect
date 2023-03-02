@@ -32,9 +32,18 @@ const MultiSelectDemo = () => {
         onSelect={console.log}
         onRemove={console.log}
         selectedValues={['yellow', 'pink']}
-        showCheckbox
+        selectedOptionDisplay="checkbox"
       />
-      <h3>Array Objects MultiSelect</h3>
+      <h3>Array String Multiselect, leave selected option in list</h3>
+      <MultiSelect
+        options={['yellow', 'blue', 'pink', 'white', 'cyan', 'green', 'orange', 'red']}
+        type="multiList"
+        onSelect={console.log}
+        onRemove={console.log}
+        selectedValues={['yellow', 'pink']}
+        selectedOptionDisplay="show"
+      />
+      <h3>Array Objects MultiSelect, leave selected option in list</h3>
       <MultiSelect
         options={[
           {
@@ -60,6 +69,7 @@ const MultiSelectDemo = () => {
             color: 'pink',
           },
         ]}
+        selectedOptionDisplay="show"
       />
       <h3>Limit 2 elements, non-searchable</h3>
       <MultiSelect
@@ -88,10 +98,9 @@ const MultiSelectDemo = () => {
         groupByDefault="Not categorized"
         disablePreSelectedValues
         selectedValues={[groupedOptions[1]]}
-        showCheckbox={true}
+        selectedOptionDisplay="checkbox"
         onSelect={console.log}
       />
-
       <h3>Single Select</h3>
       <MultiSelect
         style={{ notFound: { color: 'green' } }}
@@ -100,6 +109,16 @@ const MultiSelectDemo = () => {
         onSelect={console.log}
         onRemove={console.log}
         type="single"
+      />
+      <h3>Single Select, remove selected item from list</h3>
+      <MultiSelect
+        style={{ notFound: { color: 'green' } }}
+        emptyRecordMsg="here your empty message"
+        options={['one', 'two', 'three']}
+        onSelect={console.log}
+        onRemove={console.log}
+        type="single"
+        selectedOptionDisplay="hide"
       />
       <h3>Single Select with handler, non-searchable</h3>
       <MultiSelect
@@ -122,7 +141,7 @@ const MultiSelectDemo = () => {
         displayKey="value"
         onSelect={console.log}
         onRemove={console.log}
-        showCheckbox={true}
+        selectedOptionDisplay="checkbox"
       />
     </>
   )

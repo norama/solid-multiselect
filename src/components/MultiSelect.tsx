@@ -38,7 +38,7 @@ export interface IMultiSelectProps {
   selectedValues?: IOption[]
   idKey?: string
   displayKey?: string
-  showCheckbox?: boolean
+  selectedOptionDisplay?: 'show' | 'hide' | 'checkbox'
   selectionLimit?: number
   placeholder?: string
   groupByKey?: string
@@ -96,6 +96,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   const idKey = props.idKey ?? props.displayKey
   const displayKey = props.displayKey ?? props.idKey
   const singleSelect = type === 'single'
+  const selectedOptionDisplay = props.selectedOptionDisplay ?? (singleSelect ? 'show' : 'hide')
 
   let optionTimeout: any
   let container: HTMLDivElement
@@ -113,22 +114,10 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     if (singleSelect) {
       return
     }
-    if (props.selectionLimit == -1) {
+    if (props.selectionLimit !== selectedValues().length) {
       return false
     }
-    if (props.selectionLimit != selectedValues().length) {
-      return false
-    }
-    if (props.selectionLimit == selectedValues().length) {
-      if (!props.showCheckbox) {
-        return true
-      } else {
-        if (isSelectedValue(item)) {
-          return false
-        }
-        return true
-      }
-    }
+    return selectedOptionDisplay === 'hide' ? true : !isSelectedValue(item)
   }
 
   const isDisablePreSelectedValues = (value: IOption) => {
@@ -174,7 +163,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   }
 
   const initialSetValue = () => {
-    if (!props.showCheckbox && !singleSelect) {
+    if (selectedOptionDisplay === 'hide') {
       removeSelectedValuesFromOptions(false)
     }
 
@@ -230,7 +219,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     newSelectedValues.splice(index, 1)
     props.onRemove(newSelectedValues, item)
     setSelectedValues(newSelectedValues)
-    if (!props.showCheckbox) {
+    if (selectedOptionDisplay === 'hide') {
       removeSelectedValuesFromOptions(true)
     }
   }
@@ -240,23 +229,17 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
       onSingleSelect(item)
       props.onSelect([item], item)
       setInputValue('')
-      return
-    }
-    if (isSelectedValue(item)) {
+    } else if (selectedOptionDisplay === 'checkbox' && isSelectedValue(item)) {
       onRemoveSelectedItem(item)
+    } else if (props.selectionLimit === selectedValues().length) {
       return
+    } else {
+      const newValuesSelected: IOption[] = [...selectedValues(), item]
+      props.onSelect(newValuesSelected, item)
+      setSelectedValues(newValuesSelected)
     }
-    if (props.selectionLimit == selectedValues().length) {
-      return
-    }
 
-    const newValuesSelected: IOption[] = [...selectedValues(), item]
-
-    props.onSelect(newValuesSelected, item)
-
-    setSelectedValues(newValuesSelected)
-
-    if (!props.showCheckbox) {
+    if (selectedOptionDisplay === 'hide') {
       removeSelectedValuesFromOptions(true)
     } else {
       filterOptionsByInput()
@@ -320,9 +303,6 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   }
 
   const onFocus = () => {
-    if (singleSelect) {
-      setOptions(props.options)
-    }
     if (optionListOpen()) {
       clearTimeout(optionTimeout)
     } else {
@@ -438,8 +418,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
             emptyRecordMsg={props.emptyRecordMsg}
             style={props.style}
             displayKey={displayKey}
-            showCheckbox={props.showCheckbox}
-            singleSelect={singleSelect}
+            showCheckbox={selectedOptionDisplay === 'checkbox'}
             onSelectItem={onSelectItem}
             fadeOutSelection={fadeOutSelection}
             highlightOption={highlightOption}
@@ -450,8 +429,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
             groupedObject={groupedObject}
             style={style}
             displayKey={displayKey}
-            showCheckbox={props.showCheckbox}
-            singleSelect={singleSelect}
+            showCheckbox={selectedOptionDisplay === 'checkbox'}
             onSelectItem={onSelectItem}
             fadeOutSelection={fadeOutSelection}
             isDisablePreSelectedValues={isDisablePreSelectedValues}

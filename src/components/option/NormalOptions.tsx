@@ -7,7 +7,6 @@ type Props = {
   style: IStyle
   displayKey?: string
   showCheckbox?: boolean
-  singleSelect?: boolean
   onSelectItem: (Option) => () => void
   fadeOutSelection: (Option) => boolean
   highlightOption: () => number
@@ -20,7 +19,6 @@ const NormalOptions = ({
   style,
   displayKey,
   showCheckbox,
-  singleSelect,
   onSelectItem,
   fadeOutSelection,
   highlightOption,
@@ -46,7 +44,7 @@ const NormalOptions = ({
             }}
             onClick={onSelectItem(option)}
           >
-            <Show when={showCheckbox && !singleSelect}>
+            <Show when={showCheckbox}>
               <input
                 type="checkbox"
                 readOnly

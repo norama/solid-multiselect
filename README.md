@@ -27,7 +27,12 @@ Changes:
 - `selectedValues`: array of selected options
 - `idKey`: key of `id` field (unique ID for comparison) in case of record options
 - `displayKey`: key of field to display in case of record in case of record options (default: same as `idKey`)
-- `showCheckbox`: show checkbox in front of option in dropdown selector
+- `selectedOptionDisplay`: selected option display:
+  - `show`: leave selected option in list and enable multiple selection of same item
+    (default for `type = 'single'`: leave item in list but no multiple selection)
+  - `hide`: remove selected options from list
+    (default for `type = 'multiChips'` and `type = 'multiList'`)
+  - `checkbox`: chow checkbox which toggles selected state
 - `selectionLimit`: max number of selected items
 - `searchable`: `true` for quick search input in selector
 - `caseSensitiveSearch`: `true` for case sensitive quick search

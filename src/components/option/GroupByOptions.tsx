@@ -6,7 +6,6 @@ type Props = {
   style: IStyle
   displayKey?: string
   showCheckbox?: boolean
-  singleSelect?: boolean
   onSelectItem: (Option) => () => void
   fadeOutSelection: (Option) => boolean
   isDisablePreSelectedValues: (Option) => boolean
@@ -18,7 +17,6 @@ const GroupByOptions = ({
   style,
   displayKey,
   showCheckbox,
-  singleSelect,
   onSelectItem,
   fadeOutSelection,
   isDisablePreSelectedValues,
@@ -43,7 +41,7 @@ const GroupByOptions = ({
                   }}
                   onClick={onSelectItem(option)}
                 >
-                  <Show when={showCheckbox && !singleSelect}>
+                  <Show when={showCheckbox}>
                     <input
                       type="checkbox"
                       class="checkbox optionCheckbox"
