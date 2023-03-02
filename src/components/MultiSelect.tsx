@@ -6,13 +6,16 @@ import {
   onMount,
   Component,
   Show,
+  Switch,
+  Match,
 } from 'solid-js'
 import type { IOption, IStyle } from './option/Option'
 import Loading from './option/Loading'
 import NormalOptions from './option/NormalOptions'
 import GroupByOptions from './option/GroupByOptions'
-import SelectedChips from './SelectedChips'
-import SelectedList from './SelectedList'
+import SelectedChips from './selection/SelectedChips'
+import SelectedList from './selection/SelectedList'
+import SelectedItem from './selection/SelectedItem'
 
 const DownArrow = '\u2304'
 
@@ -353,16 +356,25 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
         style={style['searchBox']}
         onClick={(e) => toggleOptionList()}
       >
-        <Show when={type !== 'multiList'}>
-          <SelectedChips
-            singleSelect={singleSelect}
-            selectedValues={selectedValues}
-            style={style}
-            isDisablePreSelectedValues={isDisablePreSelectedValues}
-            onRemoveSelectedItem={onRemoveSelectedItem}
-            displayKey={displayKey}
-          />
-        </Show>
+        <Switch>
+          <Match when={type === 'single'}>
+            <SelectedItem
+              selectedValues={selectedValues}
+              style={style}
+              isDisablePreSelectedValues={isDisablePreSelectedValues}
+              displayKey={displayKey}
+            />
+          </Match>
+          <Match when={type === 'multiChips'}>
+            <SelectedChips
+              selectedValues={selectedValues}
+              style={style}
+              isDisablePreSelectedValues={isDisablePreSelectedValues}
+              onRemoveSelectedItem={onRemoveSelectedItem}
+              displayKey={displayKey}
+            />
+          </Match>
+        </Switch>
         <Show when={props.searchable}>
           <input
             type="text"

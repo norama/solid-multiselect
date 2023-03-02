@@ -1,4 +1,4 @@
-import type { IOption, IStyle } from './option/Option'
+import type { IOption, IStyle } from '../option/Option'
 import { Show, For } from 'solid-js'
 
 const X = '\u2573'

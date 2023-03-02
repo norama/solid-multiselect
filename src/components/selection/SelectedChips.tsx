@@ -1,10 +1,9 @@
-import type { IOption, IStyle } from './option/Option'
+import type { IOption, IStyle } from '../option/Option'
 import { Show, For } from 'solid-js'
 
 const X = '\u2573'
 
 type Props = {
-  singleSelect?: boolean
   selectedValues: () => IOption[]
   style: IStyle
   isDisablePreSelectedValues: (IOption) => boolean
@@ -13,7 +12,6 @@ type Props = {
 }
 
 const SelectedChips = ({
-  singleSelect,
   selectedValues,
   style,
   isDisablePreSelectedValues,
@@ -26,13 +24,12 @@ const SelectedChips = ({
         <span
           class="chip"
           classList={{
-            singleChip: singleSelect,
             disableSelection: isDisablePreSelectedValues(value),
           }}
           style={style['chips']}
         >
           {!displayKey ? (value || '').toString() : value[displayKey]}
-          <Show when={!singleSelect && !isDisablePreSelectedValues(value)}>
+          <Show when={!isDisablePreSelectedValues(value)}>
             <span class="icon_cancel closeIcon" onClick={() => onRemoveSelectedItem(value)}>
               {X}
             </span>
