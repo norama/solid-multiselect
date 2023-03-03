@@ -1,7 +1,6 @@
+import Remover from '../Remover'
 import type { IOption, IStyle } from '../option/Option'
 import { Show, For } from 'solid-js'
-
-const X = '\u2573'
 
 type Props = {
   selectedValues: () => IOption[]
@@ -30,9 +29,7 @@ const SelectedChips = ({
         >
           {!displayKey ? (value || '').toString() : value[displayKey]}
           <Show when={!isDisablePreSelectedValues(value)}>
-            <span class="icon_cancel closeIcon" onClick={() => onRemoveSelectedItem(value)}>
-              {X}
-            </span>
+            <Remover onClick={() => onRemoveSelectedItem(value)} />
           </Show>
         </span>
       )}
