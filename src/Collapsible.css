@@ -1,0 +1,22 @@
+.collapsibleHeader:hover {
+  border-color: blueviolet;
+  cursor: pointer;
+}
+
+.collapsibleHeader {
+  border: 2px solid blue;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 10px;
+}
+.collapsibleContent {
+  background: lightseagreen;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease-out;
+}
+.collapsibleContent.open {
+  max-height: 200px;
+  overflow: visible;
+}

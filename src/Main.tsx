@@ -1,8 +1,8 @@
 import MultiSelect from './components/MultiSelect'
 import { IOption } from './components/option/Option'
 import './components/MultiSelect.css'
-import { ItemProps, RemovableItemProps } from './components/selection/Selection'
 import { Show } from 'solid-js'
+import Collapsible from './Collapsible'
 
 const groupedOptions: IOption[] = [
   { key: 'yellow', value: 'amarillo', group: 'colors' },
@@ -27,20 +27,7 @@ const MultiSelectDemo = () => {
         onRemove={console.log}
         selectedValues={['yellow', 'pink']}
         CustomRemover={() => <div style={{ 'font-size': 'small' }}>🗑</div>}
-        CustomSelectedItem={({ value, RemoverComponent }) => (
-          <div
-            style={{
-              border: '2px solid blue',
-              display: 'flex',
-              'align-items': 'center',
-              'justify-content': 'space-between',
-              'padding-left': '10px',
-            }}
-          >
-            {value as string}
-            <RemoverComponent value={value} />
-          </div>
-        )}
+        CustomSelectedItem={Collapsible}
       />
       <h3>Array String Multiselect, checkbox</h3>
       <MultiSelect
