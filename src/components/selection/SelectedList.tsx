@@ -9,7 +9,7 @@ type Props = {
   selectedValues: () => IOption[]
   style: IStyle
   displayKey?: string
-  fadeOutSelection: (IOption) => boolean
+  disableValue: (IOption) => boolean
   RemoverComponent: (props: RemoverProps) => JSX.Element
 }
 
@@ -17,7 +17,7 @@ const SelectedList = ({
   selectedValues,
   style,
   displayKey,
-  fadeOutSelection,
+  disableValue,
   RemoverComponent,
 }: Props) => {
   return (
@@ -29,7 +29,7 @@ const SelectedList = ({
               style={style['option']}
               class="option"
               classList={{
-                disableSelection: fadeOutSelection(value),
+                disableSelection: disableValue(value),
               }}
             >
               <RemoverComponent value={value} />

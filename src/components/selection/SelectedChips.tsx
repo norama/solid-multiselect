@@ -8,7 +8,7 @@ type RemoverProps = {
 type Props = {
   selectedValues: () => IOption[]
   style: IStyle
-  isDisablePreSelectedValues: (IOption) => boolean
+  disableValue: (IOption) => boolean
   displayKey?: string
   RemoverComponent: (props: RemoverProps) => JSX.Element
 }
@@ -16,7 +16,7 @@ type Props = {
 const SelectedChips = ({
   selectedValues,
   style,
-  isDisablePreSelectedValues,
+  disableValue,
   displayKey,
   RemoverComponent,
 }: Props) => {
@@ -26,7 +26,7 @@ const SelectedChips = ({
         <span
           class="chip"
           classList={{
-            disableSelection: isDisablePreSelectedValues(value),
+            disableSelection: disableValue(value),
           }}
           style={style['chips']}
         >

@@ -360,7 +360,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
             selectedValues={selectedValues}
             style={style}
             displayKey={displayKey}
-            fadeOutSelection={fadeOutSelection}
+            disableValue={fadeOutSelection}
             RemoverComponent={RemoverComponent}
           />
         </div>
@@ -377,7 +377,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
             <SelectedItem
               selectedValues={selectedValues}
               style={style}
-              isDisablePreSelectedValues={isDisablePreSelectedValues}
+              disableValue={isDisablePreSelectedValues}
               displayKey={displayKey}
             />
           </Match>
@@ -385,7 +385,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
             <SelectedChips
               selectedValues={selectedValues}
               style={style}
-              isDisablePreSelectedValues={isDisablePreSelectedValues}
+              disableValue={isDisablePreSelectedValues}
               displayKey={displayKey}
               RemoverComponent={RemoverComponent}
             />

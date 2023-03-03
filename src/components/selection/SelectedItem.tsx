@@ -4,11 +4,11 @@ import { For } from 'solid-js'
 type Props = {
   selectedValues: () => IOption[]
   style: IStyle
-  isDisablePreSelectedValues: (IOption) => boolean
+  disableValue: (IOption) => boolean
   displayKey?: string
 }
 
-const SelectedItem = ({ selectedValues, style, isDisablePreSelectedValues, displayKey }: Props) => {
+const SelectedItem = ({ selectedValues, style, disableValue, displayKey }: Props) => {
   return (
     <For each={selectedValues()}>
       {(value) => (
@@ -16,7 +16,7 @@ const SelectedItem = ({ selectedValues, style, isDisablePreSelectedValues, displ
           class="chip"
           classList={{
             singleChip: true,
-            disableSelection: isDisablePreSelectedValues(value),
+            disableSelection: disableValue(value),
           }}
           style={style['chips']}
         >
