@@ -1,10 +1,10 @@
 const X = '\u2573'
 
-type Props = {
+export type RemoverProps = {
   onClick: () => void
 }
 
-const Remover = ({ onClick }: Props) => (
+const Remover = ({ onClick }: RemoverProps) => (
   <div class="icon_cancel closeIcon" onClick={onClick} onTouchStart={onClick}>
     {X}
   </div>

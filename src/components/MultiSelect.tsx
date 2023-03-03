@@ -8,6 +8,7 @@ import {
   Show,
   Switch,
   Match,
+  JSX,
 } from 'solid-js'
 import type { IOption, IStyle } from './option/Option'
 import Loading from './option/Loading'
@@ -16,6 +17,8 @@ import GroupByOptions from './option/GroupByOptions'
 import SelectedChips from './selection/SelectedChips'
 import SelectedList from './selection/SelectedList'
 import SelectedItem from './selection/SelectedItem'
+import Remover from './Remover'
+import type { RemoverProps } from './Remover'
 
 const DownArrow = '\u2304'
 
@@ -33,6 +36,7 @@ const defaultProps = {
   onSelect: () => {},
   onRemove: () => {},
   avoidHighlightFirstOption: true,
+  CustomRemover: Remover,
 }
 
 export interface IMultiSelectProps {
@@ -61,6 +65,7 @@ export interface IMultiSelectProps {
   searchable?: boolean
   loading?: boolean
   loadingMessage?: string
+  CustomRemover: (props: RemoverProps) => JSX.Element
 }
 
 export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectProps) => {
@@ -100,6 +105,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   const displayKey = props.displayKey ?? props.idKey
   const singleSelect = type === 'single'
   const selectedOptionDisplay = props.selectedOptionDisplay ?? (singleSelect ? 'show' : 'hide')
+  const CustomRemover = props.CustomRemover
 
   let optionTimeout: any
   let container: HTMLDivElement
@@ -327,6 +333,12 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     }
   }
 
+  const RemoverComponent = ({ value }: { value: IOption }) => (
+    <Show when={!isDisablePreSelectedValues(value)}>
+      <CustomRemover onClick={() => onRemoveSelectedItem(value)} />
+    </Show>
+  )
+
   return (
     <div
       class="multiSelect-container multiSelectContainer"
@@ -344,8 +356,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
             style={style}
             displayKey={displayKey}
             fadeOutSelection={fadeOutSelection}
-            isDisablePreSelectedValues={isDisablePreSelectedValues}
-            onRemoveSelectedItem={onRemoveSelectedItem}
+            RemoverComponent={RemoverComponent}
           />
         </div>
       </Show>
@@ -370,8 +381,8 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
               selectedValues={selectedValues}
               style={style}
               isDisablePreSelectedValues={isDisablePreSelectedValues}
-              onRemoveSelectedItem={onRemoveSelectedItem}
               displayKey={displayKey}
+              RemoverComponent={RemoverComponent}
             />
           </Match>
         </Switch>

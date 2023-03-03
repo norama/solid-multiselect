@@ -1,23 +1,24 @@
-import Remover from '../Remover'
 import type { IOption, IStyle } from '../option/Option'
-import { Show, For } from 'solid-js'
+import { Show, For, JSX } from 'solid-js'
+
+type RemoverProps = {
+  value: IOption
+}
 
 type Props = {
   selectedValues: () => IOption[]
   style: IStyle
   displayKey?: string
-  isDisablePreSelectedValues: (IOption) => boolean
-  onRemoveSelectedItem: (Option) => void
-  fadeOutSelection: (Option) => boolean
+  fadeOutSelection: (IOption) => boolean
+  RemoverComponent: (props: RemoverProps) => JSX.Element
 }
 
 const SelectedList = ({
   selectedValues,
   style,
   displayKey,
-  isDisablePreSelectedValues,
-  onRemoveSelectedItem,
   fadeOutSelection,
+  RemoverComponent,
 }: Props) => {
   return (
     <Show when={selectedValues().length}>
@@ -31,9 +32,7 @@ const SelectedList = ({
                 disableSelection: fadeOutSelection(value),
               }}
             >
-              <Show when={!isDisablePreSelectedValues(value)}>
-                <Remover onClick={() => onRemoveSelectedItem(value)} />
-              </Show>
+              <RemoverComponent value={value} />
               <Show when={!!displayKey} fallback={() => (value || '').toString()}>
                 {value[displayKey]}
               </Show>

@@ -1,21 +1,24 @@
-import Remover from '../Remover'
 import type { IOption, IStyle } from '../option/Option'
-import { Show, For } from 'solid-js'
+import { For, JSX } from 'solid-js'
+
+type RemoverProps = {
+  value: IOption
+}
 
 type Props = {
   selectedValues: () => IOption[]
   style: IStyle
   isDisablePreSelectedValues: (IOption) => boolean
-  onRemoveSelectedItem: (IOption) => void
   displayKey?: string
+  RemoverComponent: (props: RemoverProps) => JSX.Element
 }
 
 const SelectedChips = ({
   selectedValues,
   style,
   isDisablePreSelectedValues,
-  onRemoveSelectedItem,
   displayKey,
+  RemoverComponent,
 }: Props) => {
   return (
     <For each={selectedValues()}>
@@ -28,9 +31,7 @@ const SelectedChips = ({
           style={style['chips']}
         >
           {!displayKey ? (value || '').toString() : value[displayKey]}
-          <Show when={!isDisablePreSelectedValues(value)}>
-            <Remover onClick={() => onRemoveSelectedItem(value)} />
-          </Show>
+          <RemoverComponent value={value} />
         </span>
       )}
     </For>
