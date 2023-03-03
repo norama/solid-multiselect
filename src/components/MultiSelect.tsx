@@ -18,6 +18,7 @@ import SelectedChips from './selection/SelectedChips'
 import SelectedList from './selection/SelectedList'
 import SelectedItem from './selection/SelectedItem'
 import Remover from './Remover'
+import { RemovableItemProps } from 'components/selection/Selection'
 
 const DownArrow = '\u2304'
 
@@ -65,6 +66,7 @@ export interface IMultiSelectProps {
   loading?: boolean
   loadingMessage?: string
   CustomRemover?: () => JSX.Element
+  CustomSelectedItem?: (props: RemovableItemProps) => JSX.Element
 }
 
 export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectProps) => {
@@ -105,6 +107,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   const singleSelect = type === 'single'
   const selectedOptionDisplay = props.selectedOptionDisplay ?? (singleSelect ? 'show' : 'hide')
   const CustomRemover = props.CustomRemover
+  const CustomSelectedItem = props.CustomSelectedItem
 
   let optionTimeout: any
   let container: HTMLDivElement
@@ -362,6 +365,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
             displayKey={displayKey}
             disableValue={fadeOutSelection}
             RemoverComponent={RemoverComponent}
+            CustomItem={CustomSelectedItem}
           />
         </div>
       </Show>
@@ -379,6 +383,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
               style={style}
               disableValue={isDisablePreSelectedValues}
               displayKey={displayKey}
+              CustomItem={CustomSelectedItem}
             />
           </Match>
           <Match when={type === 'multiChips'}>
@@ -388,6 +393,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
               disableValue={isDisablePreSelectedValues}
               displayKey={displayKey}
               RemoverComponent={RemoverComponent}
+              CustomItem={CustomSelectedItem}
             />
           </Match>
         </Switch>

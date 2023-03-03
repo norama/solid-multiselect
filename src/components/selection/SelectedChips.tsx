@@ -33,17 +33,19 @@ const SelectedChips = ({
   CustomItem = Item,
 }: Props) => {
   return (
-    <For each={selectedValues()}>
-      {(value) => (
-        <CustomItem
-          value={value}
-          displayKey={displayKey}
-          disabled={disableValue(value)}
-          style={style['chip']}
-          RemoverComponent={RemoverComponent}
-        />
-      )}
-    </For>
+    <div style={{ display: 'flex' }}>
+      <For each={selectedValues()}>
+        {(value) => (
+          <CustomItem
+            value={value}
+            displayKey={displayKey}
+            disabled={disableValue(value)}
+            style={style['chip']}
+            RemoverComponent={RemoverComponent}
+          />
+        )}
+      </For>
+    </div>
   )
 }
 

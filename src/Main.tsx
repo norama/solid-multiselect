@@ -1,6 +1,8 @@
 import MultiSelect from './components/MultiSelect'
 import { IOption } from './components/option/Option'
 import './components/MultiSelect.css'
+import { ItemProps, RemovableItemProps } from './components/selection/Selection'
+import { Show } from 'solid-js'
 
 const groupedOptions: IOption[] = [
   { key: 'yellow', value: 'amarillo', group: 'colors' },
@@ -17,7 +19,7 @@ const handleSingleSelect = (data) => {
 const MultiSelectDemo = () => {
   return (
     <>
-      <h3>Array String Multiselect, custom remover component</h3>
+      <h3>Array String Multiselect, custom selected and remover components</h3>
       <MultiSelect
         options={['yellow', 'blue', 'pink', 'white', 'cyan', 'green', 'orange', 'red']}
         type="multiList"
@@ -25,6 +27,20 @@ const MultiSelectDemo = () => {
         onRemove={console.log}
         selectedValues={['yellow', 'pink']}
         CustomRemover={() => <div style={{ 'font-size': 'small' }}>🗑</div>}
+        CustomSelectedItem={({ value, RemoverComponent }) => (
+          <div
+            style={{
+              border: '2px solid blue',
+              display: 'flex',
+              'align-items': 'center',
+              'justify-content': 'space-between',
+              'padding-left': '10px',
+            }}
+          >
+            {value as string}
+            <RemoverComponent value={value} />
+          </div>
+        )}
       />
       <h3>Array String Multiselect, checkbox</h3>
       <MultiSelect
@@ -91,7 +107,7 @@ const MultiSelectDemo = () => {
         selectionLimit={2}
       />
 
-      <h3>With disabled option selected</h3>
+      <h3>With disabled option selected, custom selected item rendering</h3>
       <MultiSelect
         options={groupedOptions}
         displayKey="value"
@@ -101,6 +117,26 @@ const MultiSelectDemo = () => {
         selectedValues={[groupedOptions[1]]}
         selectedOptionDisplay="checkbox"
         onSelect={console.log}
+        CustomRemover={() => <div style={{ 'font-size': 'small' }}>🗑</div>}
+        CustomSelectedItem={({ value, disabled, RemoverComponent }) => (
+          <div
+            style={{
+              opacity: disabled ? 0.6 : 1,
+              background: 'lightgreen',
+              'border-radius': '5px',
+              padding: '3px',
+              margin: '0 3px',
+              display: 'flex',
+              'align-items': 'center',
+              width: 'fit-content',
+            }}
+          >
+            {value['value']}
+            <Show when={!disabled}>
+              <RemoverComponent value={value} />
+            </Show>
+          </div>
+        )}
       />
       <h3>Single Select</h3>
       <MultiSelect
@@ -121,7 +157,7 @@ const MultiSelectDemo = () => {
         type="single"
         selectedOptionDisplay="hide"
       />
-      <h3>Single Select with handler, non-searchable</h3>
+      <h3>Single Select with handler, non-searchable, custom seleted item rendering</h3>
       <MultiSelect
         style={{ notFound: { color: 'green' } }}
         emptyRecordMsg="here your empty message"
@@ -131,7 +167,9 @@ const MultiSelectDemo = () => {
         onSelect={handleSingleSelect}
         onRemove={console.log}
         type="single"
-        // selectionLimit={1}
+        CustomSelectedItem={({ value }) => (
+          <div style={{ border: '2px solid green', padding: '5px' }}>{value as string}</div>
+        )}
       />
       <h3>Grouped Options</h3>
       <MultiSelect
