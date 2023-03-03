@@ -1,9 +1,21 @@
 import type { IOption, IStyle } from '../option/Option'
+import type { RemovableItemProps, RemoverProps } from './Selection'
 import { Show, For, JSX } from 'solid-js'
 
-type RemoverProps = {
-  value: IOption
-}
+const Item = ({ value, displayKey, disabled, style, RemoverComponent }: RemovableItemProps) => (
+  <div
+    style={style}
+    class="option"
+    classList={{
+      disableSelection: disabled,
+    }}
+  >
+    <RemoverComponent value={value} />
+    <Show when={!!displayKey} fallback={() => (value || '').toString()}>
+      {value[displayKey]}
+    </Show>
+  </div>
+)
 
 type Props = {
   selectedValues: () => IOption[]
@@ -11,6 +23,7 @@ type Props = {
   displayKey?: string
   disableValue: (IOption) => boolean
   RemoverComponent: (props: RemoverProps) => JSX.Element
+  CustomItem?: (props: RemovableItemProps) => JSX.Element
 }
 
 const SelectedList = ({
@@ -19,23 +32,21 @@ const SelectedList = ({
   displayKey,
   disableValue,
   RemoverComponent,
+  CustomItem = Item,
 }: Props) => {
   return (
     <Show when={selectedValues().length}>
       <ul class="selectedList" style={style['selectedListContainer']}>
         <For each={selectedValues()}>
           {(value) => (
-            <li
-              style={style['option']}
-              class="option"
-              classList={{
-                disableSelection: disableValue(value),
-              }}
-            >
-              <RemoverComponent value={value} />
-              <Show when={!!displayKey} fallback={() => (value || '').toString()}>
-                {value[displayKey]}
-              </Show>
+            <li>
+              <CustomItem
+                value={value}
+                displayKey={displayKey}
+                disabled={disableValue(value)}
+                style={style['option']}
+                RemoverComponent={RemoverComponent}
+              />
             </li>
           )}
         </For>

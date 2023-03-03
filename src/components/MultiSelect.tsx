@@ -370,7 +370,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
         classList={{ singleSelect }}
         ref={searchWrapper}
         style={style['searchBox']}
-        onClick={(e) => toggleOptionList()}
+        onClick={() => toggleOptionList()}
       >
         <Switch>
           <Match when={type === 'single'}>
