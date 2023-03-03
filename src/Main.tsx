@@ -17,13 +17,14 @@ const handleSingleSelect = (data) => {
 const MultiSelectDemo = () => {
   return (
     <>
-      <h3>Array String Multiselect</h3>
+      <h3>Array String Multiselect, custom remover component</h3>
       <MultiSelect
         options={['yellow', 'blue', 'pink', 'white', 'cyan', 'green', 'orange', 'red']}
         type="multiList"
         onSelect={console.log}
         onRemove={console.log}
         selectedValues={['yellow', 'pink']}
+        CustomRemover={() => <div style={{ 'font-size': 'small' }}>🗑</div>}
       />
       <h3>Array String Multiselect, checkbox</h3>
       <MultiSelect

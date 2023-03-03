@@ -18,7 +18,6 @@ import SelectedChips from './selection/SelectedChips'
 import SelectedList from './selection/SelectedList'
 import SelectedItem from './selection/SelectedItem'
 import Remover from './Remover'
-import type { RemoverProps } from './Remover'
 
 const DownArrow = '\u2304'
 
@@ -65,7 +64,7 @@ export interface IMultiSelectProps {
   searchable?: boolean
   loading?: boolean
   loadingMessage?: string
-  CustomRemover: (props: RemoverProps) => JSX.Element
+  CustomRemover?: () => JSX.Element
 }
 
 export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectProps) => {
@@ -335,7 +334,13 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
 
   const RemoverComponent = ({ value }: { value: IOption }) => (
     <Show when={!isDisablePreSelectedValues(value)}>
-      <CustomRemover onClick={() => onRemoveSelectedItem(value)} />
+      <div
+        class="closeIcon"
+        onClick={() => onRemoveSelectedItem(value)}
+        onTouchStart={() => onRemoveSelectedItem(value)}
+      >
+        <CustomRemover />
+      </div>
     </Show>
   )
 
