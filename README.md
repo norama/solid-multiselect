@@ -51,7 +51,7 @@ Changes:
 - `loadingMessage`: message shown in loading state (default: 'loading...')
 - `style`: custom styles grouped by components:
 
-```
+```typescript
 {
   multiSelectContainer?: JSX.CSSProperties
   optionListContainer?: JSX.CSSProperties
@@ -62,6 +62,44 @@ Changes:
   notFound?: JSX.CSSProperties
   loadingMessage?: JSX.CSSProperties
 }
+```
+
+- `CustomRemover`: `() => JSX.Element` remover component which removes item from selection upon click (default: `X` sign, relevant only if `type` is not `single`)
+- `CustomSelectedItem`: `(props: RemovableItemProps) => JSX.Element` selected item renderer where `RemovableItemProps` is
+
+```typescript
+{
+  value: IOption
+  displayKey?: string
+  disabled: boolean
+  style: JSX.CSSProperties
+  RemoverComponent: ({ value }: {value: IOption}) => JSX.Element
+}
+```
+
+`RemoverComponent` will be a wrapper around the possiby custom remover component, just render with the value, e.g.:
+
+```typescript
+  CustomRemover={() => <div style={{ 'font-size': 'small' }}>🗑</div>}
+  CustomSelectedItem={({ value, disabled, RemoverComponent }) => (
+    <div
+      style={{
+        opacity: disabled ? 0.6 : 1,
+        background: 'lightgreen',
+        'border-radius': '5px',
+        padding: '3px',
+        margin: '0 3px',
+        display: 'flex',
+        'align-items': 'center',
+        width: 'fit-content',
+      }}
+    >
+      {value['value']}
+      <Show when={!disabled}>
+        <RemoverComponent value={value} />
+      </Show>
+    </div>
+  )}
 ```
 
 # Install as npm package
