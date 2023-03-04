@@ -7,8 +7,7 @@ type Props = {
   displayKey?: string
   showCheckbox?: boolean
   onSelectItem: (Option) => () => void
-  fadeOutSelection: (Option) => boolean
-  isDisablePreSelectedValues: (Option) => boolean
+  disableSelection: (Option) => boolean
   isSelectedValue: (Option) => boolean
 }
 
@@ -18,8 +17,7 @@ const GroupByOptions = ({
   displayKey,
   showCheckbox,
   onSelectItem,
-  fadeOutSelection,
-  isDisablePreSelectedValues,
+  disableSelection,
   isSelectedValue,
 }: Props) => {
   return (
@@ -36,8 +34,7 @@ const GroupByOptions = ({
                   style={style['option']}
                   class="groupChildEle option"
                   classList={{
-                    disableSelection:
-                      fadeOutSelection(option) || isDisablePreSelectedValues(option),
+                    disableSelection: disableSelection(option),
                   }}
                   onClick={onSelectItem(option)}
                 >

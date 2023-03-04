@@ -8,7 +8,7 @@ type Props = {
   displayKey?: string
   showCheckbox?: boolean
   onSelectItem: (Option) => () => void
-  fadeOutSelection: (Option) => boolean
+  disableSelection: (Option) => boolean
   highlightOption: () => number
   isSelectedValue: (Option) => boolean
 }
@@ -20,7 +20,7 @@ const NormalOptions = ({
   displayKey,
   showCheckbox,
   onSelectItem,
-  fadeOutSelection,
+  disableSelection,
   highlightOption,
   isSelectedValue,
 }: Props) => {
@@ -39,7 +39,7 @@ const NormalOptions = ({
             style={style['option']}
             class="option"
             classList={{
-              disableSelection: fadeOutSelection(option),
+              disableSelection: disableSelection(option),
               'highlightOption highlight': highlightOption() === index(),
             }}
             onClick={onSelectItem(option)}

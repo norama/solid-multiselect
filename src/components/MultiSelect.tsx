@@ -124,7 +124,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
 
   const fadeOutSelection = (item: IOption) => {
     if (singleSelect) {
-      return
+      return false
     }
     if (props.selectionLimit !== selectedValues().length) {
       return false
@@ -132,14 +132,14 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     return selectedOptionDisplay === 'hide' ? true : !isSelectedValue(item)
   }
 
-  const isDisablePreSelectedValues = (value: IOption) => {
+  const disablePreSelectedValues = (value: IOption) => {
     if (!props.disablePreSelectedValues || !preSelectedValues().length) {
       return false
     }
     if (idKey) {
-      return preSelectedValues().filter((i) => i[idKey] === value[idKey]).length > 0
+      return !!preSelectedValues().find((i) => i[idKey] === value[idKey])
     }
-    return preSelectedValues().filter((i) => i === value).length > 0
+    return !!preSelectedValues().find((i) => i === value)
   }
 
   const removeSelectedValuesFromOptions = (skipCheck: boolean) => {
@@ -332,7 +332,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   }
 
   const RemoverComponent = ({ value }: { value: IOption }) => (
-    <Show when={!isDisablePreSelectedValues(value)}>
+    <Show when={!disablePreSelectedValues(value)}>
       <div
         class="closeIcon"
         onClick={() => onRemoveSelectedItem(value)}
@@ -377,7 +377,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
             <SelectedItem
               selectedValues={selectedValues}
               style={style}
-              disableValue={isDisablePreSelectedValues}
+              disableValue={disablePreSelectedValues}
               displayKey={displayKey}
               CustomItem={CustomSelectedItem}
             />
@@ -386,7 +386,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
             <SelectedChips
               selectedValues={selectedValues}
               style={style}
-              disableValue={isDisablePreSelectedValues}
+              disableValue={disablePreSelectedValues}
               displayKey={displayKey}
               RemoverComponent={RemoverComponent}
               CustomItem={CustomSelectedItem}
@@ -450,7 +450,9 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
             displayKey={displayKey}
             showCheckbox={selectedOptionDisplay === 'checkbox'}
             onSelectItem={onSelectItem}
-            fadeOutSelection={fadeOutSelection}
+            disableSelection={(item: IOption) =>
+              fadeOutSelection(item) || disablePreSelectedValues(item)
+            }
             highlightOption={highlightOption}
             isSelectedValue={isSelectedValue}
           />
@@ -461,8 +463,9 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
             displayKey={displayKey}
             showCheckbox={selectedOptionDisplay === 'checkbox'}
             onSelectItem={onSelectItem}
-            fadeOutSelection={fadeOutSelection}
-            isDisablePreSelectedValues={isDisablePreSelectedValues}
+            disableSelection={(item: IOption) =>
+              fadeOutSelection(item) || disablePreSelectedValues(item)
+            }
             isSelectedValue={isSelectedValue}
           />
         )}
