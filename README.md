@@ -33,6 +33,8 @@ Changes:
   - `hide`: remove selected options from list
     (default for `type = 'multiChips'` and `type = 'multiList'`)
   - `checkbox`: chow checkbox which toggles selected state
+- `optionDisplay`: `(IOption) => 'show' | 'hide' | 'disabled'` determines whether the option is to be
+  shown / hidden / shown as disabled (default: `'show'` for all)
 - `selectionLimit`: max number of selected items
 - `searchable`: `true` for quick search input in selector
 - `caseSensitiveSearch`: `true` for case sensitive quick search

@@ -7,6 +7,7 @@ type Props = {
   style: IStyle
   displayKey?: string
   showCheckbox?: boolean
+  optionDisplay: (IOption) => 'show' | 'hide' | 'disable'
   onSelectItem: (Option) => () => void
   disableSelection: (Option) => boolean
   highlightOption: () => number
@@ -19,6 +20,7 @@ const NormalOptions = ({
   style,
   displayKey,
   showCheckbox,
+  optionDisplay,
   onSelectItem,
   disableSelection,
   highlightOption,
@@ -35,27 +37,29 @@ const NormalOptions = ({
         }
       >
         {(option, index) => (
-          <li
-            style={style['option']}
-            class="option"
-            classList={{
-              disableSelection: disableSelection(option),
-              'highlightOption highlight': highlightOption() === index(),
-            }}
-            onClick={onSelectItem(option)}
-          >
-            <Show when={showCheckbox}>
-              <input
-                type="checkbox"
-                readOnly
-                class="checkbox optionCheckbox"
-                checked={isSelectedValue(option)}
-              />
-            </Show>
-            <Show when={!!displayKey} fallback={() => (option || '').toString()}>
-              {option[displayKey]}
-            </Show>
-          </li>
+          <Show when={optionDisplay(option) !== 'hide'}>
+            <li
+              style={style['option']}
+              class="option"
+              classList={{
+                disableSelection: disableSelection(option) || optionDisplay(option) === 'disable',
+                'highlightOption highlight': highlightOption() === index(),
+              }}
+              onClick={onSelectItem(option)}
+            >
+              <Show when={showCheckbox}>
+                <input
+                  type="checkbox"
+                  readOnly
+                  class="checkbox optionCheckbox"
+                  checked={isSelectedValue(option)}
+                />
+              </Show>
+              <Show when={!!displayKey} fallback={() => (option || '').toString()}>
+                {option[displayKey]}
+              </Show>
+            </li>
+          </Show>
         )}
       </For>
     </ul>

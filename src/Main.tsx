@@ -1,7 +1,7 @@
 import MultiSelect from './components/MultiSelect'
 import { IOption } from './components/option/Option'
 import './components/MultiSelect.css'
-import { Show } from 'solid-js'
+import { Show, createSignal } from 'solid-js'
 import Collapsible from './Collapsible'
 
 const groupedOptions: IOption[] = [
@@ -9,6 +9,7 @@ const groupedOptions: IOption[] = [
   { key: 'pink', value: 'rosa', group: 'colors' },
   { key: 'xs', value: 'small', group: 'sizes' },
   { key: 'm', value: 'medium', group: 'sizes' },
+  { key: 'hide', value: 'hide', group: 'sizes' },
 ]
 
 const handleSingleSelect = (data) => {
@@ -17,9 +18,14 @@ const handleSingleSelect = (data) => {
 }
 
 const MultiSelectDemo = () => {
+  const [selected, setSelected] = createSignal([])
+
   return (
     <>
-      <h3>Array String Multiselect, custom selected and remover components</h3>
+      <h3>
+        Array String Multiselect, custom selected and remover components, selected items shown as
+        disabled in option list
+      </h3>
       <MultiSelect
         options={[
           'yellow',
@@ -34,9 +40,16 @@ const MultiSelectDemo = () => {
           'čočka',
         ]}
         type="multiList"
-        onSelect={console.log}
-        onRemove={console.log}
-        selectedValues={['yellow', 'pink']}
+        onSelect={(selectedList) => {
+          console.log(selectedList)
+          setSelected(selectedList)
+        }}
+        onRemove={(selectedList) => {
+          console.log(selectedList)
+          setSelected(selectedList)
+        }}
+        selectedOptionDisplay="show"
+        optionDisplay={(option) => (selected().includes(option) ? 'disable' : 'show')}
         CustomRemover={() => <div style={{ 'font-size': 'small' }}>🗑</div>}
         CustomSelectedItem={Collapsible}
       />
@@ -49,7 +62,7 @@ const MultiSelectDemo = () => {
         selectedValues={['yellow', 'pink']}
         selectedOptionDisplay="checkbox"
       />
-      <h3>Array String Multiselect, leave selected option in list</h3>
+      <h3>Array String Multiselect, leave selected option in list, disable option 'orange'</h3>
       <MultiSelect
         options={['yellow', 'blue', 'pink', 'white', 'cyan', 'green', 'orange', 'red']}
         type="multiList"
@@ -57,6 +70,7 @@ const MultiSelectDemo = () => {
         onRemove={console.log}
         selectedValues={['yellow', 'pink']}
         selectedOptionDisplay="show"
+        optionDisplay={(option: string) => (option === 'orange' ? 'disable' : 'show')}
       />
       <h3>Array Objects MultiSelect, leave selected option in list</h3>
       <MultiSelect
@@ -169,13 +183,16 @@ const MultiSelectDemo = () => {
           <div style={{ border: '2px solid green', padding: '5px' }}>{value as string}</div>
         )}
       />
-      <h3>Grouped Options</h3>
+      <h3>Grouped Options, some disabled or hidden</h3>
       <MultiSelect
         style={{ notFound: { color: 'green' } }}
         options={groupedOptions}
         groupByKey="group"
         idKey="key"
         displayKey="value"
+        optionDisplay={(option) =>
+          option['key'] === 'hide' ? 'hide' : option['key'] === 'xs' ? 'disable' : 'show'
+        }
         onSelect={console.log}
         onRemove={console.log}
         selectedOptionDisplay="checkbox"

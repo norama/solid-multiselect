@@ -46,6 +46,7 @@ export interface IMultiSelectProps {
   selectedValues?: IOption[]
   idKey?: string
   displayKey?: string
+  optionDisplay?: (option: IOption) => 'show' | 'hide' | 'disable'
   selectedOptionDisplay?: 'show' | 'hide' | 'checkbox'
   selectionLimit?: number
   placeholder?: string
@@ -107,6 +108,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
   const displayKey = props.displayKey ?? props.idKey
   const singleSelect = type === 'single'
   const selectedOptionDisplay = props.selectedOptionDisplay ?? (singleSelect ? 'show' : 'hide')
+  const optionDisplay = props.optionDisplay ?? (() => 'show')
   const CustomRemover = props.CustomRemover
   const CustomSelectedItem = props.CustomSelectedItem
 
@@ -448,6 +450,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
             emptyRecordMsg={props.emptyRecordMsg}
             style={props.style}
             displayKey={displayKey}
+            optionDisplay={optionDisplay}
             showCheckbox={selectedOptionDisplay === 'checkbox'}
             onSelectItem={onSelectItem}
             disableSelection={(item: IOption) =>
@@ -462,6 +465,7 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
             style={style}
             displayKey={displayKey}
             showCheckbox={selectedOptionDisplay === 'checkbox'}
+            optionDisplay={optionDisplay}
             onSelectItem={onSelectItem}
             disableSelection={(item: IOption) =>
               fadeOutSelection(item) || disablePreSelectedValues(item)

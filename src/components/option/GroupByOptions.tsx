@@ -6,6 +6,7 @@ type Props = {
   style: IStyle
   displayKey?: string
   showCheckbox?: boolean
+  optionDisplay: (IOption) => 'show' | 'hide' | 'disable'
   onSelectItem: (Option) => () => void
   disableSelection: (Option) => boolean
   isSelectedValue: (Option) => boolean
@@ -16,6 +17,7 @@ const GroupByOptions = ({
   style,
   displayKey,
   showCheckbox,
+  optionDisplay,
   onSelectItem,
   disableSelection,
   isSelectedValue,
@@ -30,24 +32,27 @@ const GroupByOptions = ({
             </li>
             <For each={groupedObject()[objKey]}>
               {(option: IOption) => (
-                <li
-                  style={style['option']}
-                  class="groupChildEle option"
-                  classList={{
-                    disableSelection: disableSelection(option),
-                  }}
-                  onClick={onSelectItem(option)}
-                >
-                  <Show when={showCheckbox}>
-                    <input
-                      type="checkbox"
-                      class="checkbox optionCheckbox"
-                      readOnly
-                      checked={isSelectedValue(option)}
-                    />
-                  </Show>
-                  {!!displayKey ? option[displayKey] : (option || '').toString()}
-                </li>
+                <Show when={optionDisplay(option) !== 'hide'}>
+                  <li
+                    style={style['option']}
+                    class="groupChildEle option"
+                    classList={{
+                      disableSelection:
+                        disableSelection(option) || optionDisplay(option) === 'disable',
+                    }}
+                    onClick={onSelectItem(option)}
+                  >
+                    <Show when={showCheckbox}>
+                      <input
+                        type="checkbox"
+                        class="checkbox optionCheckbox"
+                        readOnly
+                        checked={isSelectedValue(option)}
+                      />
+                    </Show>
+                    {!!displayKey ? option[displayKey] : (option || '').toString()}
+                  </li>
+                </Show>
               )}
             </For>
           </>
