@@ -16,9 +16,6 @@ export const matchValues = (value: string, search: string, caseSensitiveSearch?:
     searchDiacriticsCache = {}
   }
 
-  console.log('values', valueDiacriticsCache)
-  console.log('searches', searchDiacriticsCache)
-
   if (caseSensitiveSearch) {
     return value.indexOf(search) > -1
   }
