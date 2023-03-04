@@ -19,6 +19,7 @@ import SelectedList from './selection/SelectedList'
 import SelectedItem from './selection/SelectedItem'
 import Remover from './Remover'
 import { RemovableItemProps } from 'components/selection/Selection'
+import { matchValues } from './search'
 
 const DownArrow = '\u2304'
 
@@ -262,26 +263,21 @@ export const MultiSelect: Component<IMultiSelectProps> = (props: IMultiSelectPro
     setHighlightOption(avoidHighlightFirstOption ? -1 : 0)
   }
 
-  const matchValues = (value: string, search: string) => {
-    if (props.caseSensitiveSearch) {
-      return value.indexOf(search) > -1
-    }
-    if (value.toLowerCase) {
-      return value.toLowerCase().indexOf(search.toLowerCase()) > -1
-    }
-    return value.toString().indexOf(search) > -1
-  }
-
   const filterOptionsByInput = (val = inputValue()) => {
     if (!props.searchable) {
       return
     }
-    let newOptions: IOption[]
-    if (displayKey) {
-      newOptions = filteredOptions().filter((option) => matchValues(option[displayKey], val))
-    } else {
-      newOptions = filteredOptions().filter((option) => matchValues(option.toString(), val))
-    }
+
+    const newOptions = val
+      ? filteredOptions().filter((option) =>
+          matchValues(
+            displayKey ? option[displayKey] : option.toString(),
+            val,
+            props.caseSensitiveSearch
+          )
+        )
+      : filteredOptions()
+
     groupByOptions(newOptions)
     setOptions(newOptions)
   }

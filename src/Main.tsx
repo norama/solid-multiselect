@@ -21,7 +21,18 @@ const MultiSelectDemo = () => {
     <>
       <h3>Array String Multiselect, custom selected and remover components</h3>
       <MultiSelect
-        options={['yellow', 'blue', 'pink', 'white', 'cyan', 'green', 'orange', 'red']}
+        options={[
+          'yellow',
+          'blue',
+          'pink',
+          'white',
+          'cyan',
+          'green',
+          'orange',
+          'red',
+          'řepa',
+          'čočka',
+        ]}
         type="multiList"
         onSelect={console.log}
         onRemove={console.log}
