@@ -38,3 +38,25 @@ h3 {
   display: block;
   margin-bottom: 20px;
 }
+
+/* scrollbar */
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: gray;
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  background: gray;
+}
